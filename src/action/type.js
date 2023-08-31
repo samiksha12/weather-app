@@ -1,0 +1,4 @@
+export const CITY_API_LOADING = "CITY_API_LOADING";
+export const CITY_API_SUCCESS = "CITY_API_SUCCESS";
+export const CITY_API_ERROR = "CITY_API_ERROR";
+
