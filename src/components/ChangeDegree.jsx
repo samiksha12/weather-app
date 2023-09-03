@@ -11,7 +11,7 @@ function ChangeDegree() {
     degreeIcon = <span>&deg;F</span>;
   }
   return (
-    <div className="d-flex justify-content-end">
+    <div className="d-flex justify-content-end px-3">
       <div className="col-1">
         <button
           className="btn btn-outline-dark rounded-pill"

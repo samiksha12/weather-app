@@ -35,7 +35,7 @@ function WeatherTabs() {
         </nav>
         <div className="tab-content" id="nav-tabContent">
           <div
-            className="tab-pane fade show active"
+            className="tab-pane fade show active overflow-x-auto"
             id="today"
             role="tabpanel"
             aria-labelledby="today-tab"

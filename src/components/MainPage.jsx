@@ -4,7 +4,7 @@ import RightSidebar from "./RightSidebar";
 import "./main.css";
 function MainPage() {
   return (
-    <Card className='m-2'>
+    <Card className='m-2 overflow-x-hidden'>
       <div className="main-container">
         <div className="row">
           <div className="col-12 col-sm-4 left-panel">

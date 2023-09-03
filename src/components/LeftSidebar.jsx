@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchCities from '../common/SearchCities'
+import SearchCities from './SearchCities'
 
 function LeftSidebar() {
   return (

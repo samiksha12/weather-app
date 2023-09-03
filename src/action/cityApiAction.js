@@ -15,10 +15,12 @@ export function cityApiSuccess(data) {
 export function cityApiAction() {
   return (dispatch) => {
     dispatch(cityApiLoading);
+    
     setTimeout(() => {
       TeleportAutocomplete.init(".my-input").on("change", function (val) {
         dispatch(cityApiSuccess(JSON.stringify(val, null, 2)));
       });
     }, 1000);
+    
   };
 }
