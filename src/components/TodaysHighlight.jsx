@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "../common/Card";
+import Icon from "../common/Icon";
 
 function TodaysHighlight() {
   const customClass = "m-2 col-10 col-sm-3";
@@ -28,7 +29,7 @@ function TodaysHighlight() {
               <span className="wind-unit">mph</span>
             </div>
             <div>
-              <i className="bi bi-wind"></i>WSW
+              <Icon className="wind"></Icon>WSW
             </div>
           </div>
         </Card>
@@ -37,13 +38,13 @@ function TodaysHighlight() {
             <div>Sunrise & Sunset</div>
             <div className="d-flex justify-content-center align-items-center">
               <div className="sun-icon p-1">
-                <i className="bi bi-sunrise-fill"></i>
+                <Icon className="sunrise-fill"></Icon>
               </div>
               <div className="px-2">6:00 AM</div>
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <div className="sun-icon p-1">
-                <i className="bi bi-sunset-fill"></i>
+              <Icon className="sunset-fill"></Icon>
               </div>
               <div className="px-2">8:00 PM</div>
             </div>

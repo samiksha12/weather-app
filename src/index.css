@@ -6,7 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.body-page{
+  height:100vh !important;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -171,6 +173,10 @@ code {
 .sun-icon i{
   font-size: 25px;
   color:#F2C62F;
+}
+
+.list-city-div{
+  max-height:200px;
 }
 
 @media screen and (max-width :575px) {
