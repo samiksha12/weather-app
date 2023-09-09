@@ -12,13 +12,23 @@ function CityList() {
     const handleDelete = (data,geonameId) => {
         dispatch(deleteCityApiAction(data,geonameId,user));
       };
+      const sortedData = cityData.data.slice().sort((a,b)=>{
+        if(a.active === true && b.active === false){
+          return -1;
+        }
+        else if(a.active === false && b.active===true){
+          return 1;
+        } else{
+          return 0;
+        }
+      })
   return (
     <>
     <ul
             className="list-group list-group-flush"
             id="list-group-city"
           >
-            {cityData.data.map((list, index) => (
+            {cityData.data && sortedData.map((list, index) => (
               <li
                 className="list-group-item d-flex justify-content-between align-items-start"
                 key={index}

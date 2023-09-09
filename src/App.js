@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     //init tooltip
     Array.from(document.querySelectorAll('button[data-bs-toggle="tooltip"]'))
-    .forEach(tooltipNode => new Tooltip(tooltipNode))
+    .forEach(tooltipNode => new Tooltip(tooltipNode,{trigger:'hover'}))
     });
   useEffect(() => {
     try {
@@ -26,9 +26,10 @@ function App() {
     dispatch(getCityApiAction(user));
   },[user]);
   useEffect(()=>{
-    const userData = {};
+    console.log(cityData);
     if(user !==null && cityData.data.length >0){
-    userData[user] =cityData.data;
+    // userData[user] =cityData.data;
+    const userData = { [user]: cityData.data };
     dispatch(saveCityApiAction(userData,user));
     }
     if(!cityData){

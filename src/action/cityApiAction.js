@@ -79,6 +79,12 @@ export function getCityApiAction(user) {
           if (userData) {
             userData.forEach((item) => {
               dispatch(oldCityApiSuccess(item));
+              if(item.active === true){
+                const instance = new TeleportAutocomplete({ el: ".my-input" ,value:item});
+                instance.on("change", function (val) {
+                  dispatch(cityApiSuccess(val));
+                });
+              }
             });
           }
         })
