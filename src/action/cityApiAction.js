@@ -43,8 +43,7 @@ export function deleteCityApiAction(citydata, geoNameId, user) {
   return (dispatch) => {
     dispatch(cityApiDelete(geoNameId));
     deleteData(DELETE_DATA, citydata, user)
-      .then((data) => {
-      })
+      .then((data) => {})
       .catch((error) => {
         console.log(error);
       });
@@ -79,11 +78,8 @@ export function getCityApiAction(user) {
           if (userData) {
             userData.forEach((item) => {
               dispatch(oldCityApiSuccess(item));
-              if(item.active === true){
-                const instance = new TeleportAutocomplete({ el: ".my-input" ,value:item});
-                instance.on("change", function (val) {
-                  dispatch(cityApiSuccess(val));
-                });
+              if (item.active === true) {
+                dispatch(getCustomCity(item));
               }
             });
           }
@@ -92,5 +88,13 @@ export function getCityApiAction(user) {
           console.log(error);
         });
     }
+  };
+}
+export function getCustomCity (item) {
+  return (dispatch) => {
+    const instance = new TeleportAutocomplete({ el: ".my-input", value: item });
+    instance.on("change", function (val) {
+      dispatch(cityApiSuccess(val));
+    });
   };
 }

@@ -26,7 +26,6 @@ function App() {
     dispatch(getCityApiAction(user));
   },[user]);
   useEffect(()=>{
-    console.log(cityData);
     if(user !==null && cityData.data.length >0){
     // userData[user] =cityData.data;
     const userData = { [user]: cityData.data };
