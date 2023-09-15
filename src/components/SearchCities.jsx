@@ -1,21 +1,18 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector} from "react-redux";
 import {
-  cityApiAction,
-  currentApiAction,
-  deleteCityApiAction,
+  currentApiAction
 } from "../action/cityApiAction";
 import CityList from "./CityList";
 import Icon from "../common/Icon";
+import { UserContext } from "../context/UserContext";
 
 function SearchCities() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(cityApiAction());
-  }, []);
-
+  const {instance } = useContext(UserContext);
+  const cityData = useSelector((state)=> state.city);
   const handleCurrent = () => {
-    dispatch(currentApiAction());
+    dispatch(currentApiAction(instance));
   };
 
   return (

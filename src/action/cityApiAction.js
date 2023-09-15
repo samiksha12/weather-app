@@ -2,6 +2,7 @@ import * as types from "./type";
 import TeleportAutocomplete from "../plugin/autocomplete";
 import { deleteData, getData, getDataById, postData } from "../api";
 import { DELETE_DATA, GET_DATA, POST_DATA } from "../api/url";
+import { weatherApiAction } from "./weatherApiAction";
 
 export function cityApiError(error) {
   return { type: types.CITY_API_ERROR, data: error };
@@ -20,22 +21,23 @@ export function cityApiDelete(data) {
   return { type: types.CITY_API_DELETE, data: data };
 }
 
-export function cityApiAction() {
+// export function cityApiAction(instance) {
+//   return (dispatch) => {
+//     setTimeout(() => {
+//       instance.on("change", function (val) {
+//         dispatch(cityApiSuccess(val));
+//         typeof val !== undefined &&
+//           typeof val === "object" &&
+//           dispatch(
+//             weatherApiAction(val.latitude, val.longitude, val.geonameId)
+//           );
+//       });
+//     }, 1000);
+//   };
+// }
+export function currentApiAction(instance) {
   return (dispatch) => {
-    setTimeout(() => {
-      TeleportAutocomplete.init(".my-input").on("change", function (val) {
-        dispatch(cityApiSuccess(val));
-      });
-    }, 1000);
-  };
-}
-export function currentApiAction() {
-  return (dispatch) => {
-    const instance = new TeleportAutocomplete({ el: ".my-input" });
     instance.currentLocation();
-    instance.on("change", function (val) {
-      dispatch(cityApiSuccess(val));
-    });
   };
 }
 
@@ -69,19 +71,21 @@ export function saveCityApiAction(userData, user) {
   };
 }
 
-export function getCityApiAction(user) {
+export function getCityApiAction(user, instance) {
   return (dispatch) => {
     if (user !== null && user !== undefined && user !== "") {
       getDataById(GET_DATA, user)
         .then((data) => {
           const userData = data.data;
-          if (userData) {
+          if (userData.length > 0) {
             userData.forEach((item) => {
-              dispatch(oldCityApiSuccess(item));
               if (item.active === true) {
-                dispatch(getCustomCity(item));
+                dispatch(getCustomCity(item, instance));
               }
+              dispatch(oldCityApiSuccess(item));
             });
+          } else {
+            dispatch(currentApiAction(instance));
           }
         })
         .catch((error) => {
@@ -90,11 +94,14 @@ export function getCityApiAction(user) {
     }
   };
 }
-export function getCustomCity (item) {
+export function getCustomCity(item, instance) {
   return (dispatch) => {
-    const instance = new TeleportAutocomplete({ el: ".my-input", value: item });
-    instance.on("change", function (val) {
-      dispatch(cityApiSuccess(val));
-    });
+    if (instance) {
+      const inputElement = document.querySelector(".my-input");
+      if (inputElement) {
+        inputElement.value = item.title;
+        instance.emit("change", item);
+      }
+    }
   };
 }

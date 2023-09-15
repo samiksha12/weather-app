@@ -146,7 +146,6 @@ class TeleportAutocomplete {
     this.results = [];
     this.selectByIndex(0);
   }
-
   /**
    * Wrap input node in container
    */
@@ -457,7 +456,7 @@ class TeleportAutocomplete {
 
     if (city.timezone) {
       const tzNow = city.timezone.embedded("tz:offsets-now");
-      assign(result, { tzOffsetMinutes: tzNow.total_offset_min });
+      assign(result, { tzOffsetMinutes: tzNow.total_offset_min , timezone : city.timezone.iana_name });
     }
 
     if (city.urban_area) {
@@ -467,7 +466,7 @@ class TeleportAutocomplete {
         ua_id: uaId,
         teleport_city_url: uaCityUrl,
       } = city.urban_area;
-      assign(result, { uaName, uaId, uaCityUrl, uaSlug });
+      assign(result, { uaName, uaId, uaCityUrl, uaSlug  });
     }
 
     return result;

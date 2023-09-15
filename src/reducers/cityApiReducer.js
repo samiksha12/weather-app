@@ -8,20 +8,25 @@ export default function cityApiReducer(state = { data: [] }, action) {
       if (action.data === undefined || action.data === null) {
         return state;
       }
+
       const geoNameId = state.data.some(
         (city) => city.geonameId === action.data.geonameId
       );
-      if (!geoNameId) {
-        state = { ...state, data: [...state.data, action.data] };
-      }
-      const updateCity = state.data.map((city) => {
+
+      const updatedData = state.data.map((city) => {
         if (city.geonameId === action.data.geonameId) {
           return { ...city, active: true };
         } else {
           return { ...city, active: false };
         }
       });
-      return { ...state, data: updateCity };
+
+      if (!geoNameId) {
+        action.data.active = true;
+        updatedData.push(action.data);
+      }
+
+      return { ...state, data: updatedData };
     case types.CITY_API_DELETE:
       return {
         ...state,

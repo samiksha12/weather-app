@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { getData, postData } from "../api";
 import { GET_USERS, POST_USER, PUT_USER } from "../api/url";
+import TeleportAutocomplete from "../plugin/autocomplete";
 
 export const UserContext = React.createContext({
   user: {},
   token: null,
   login: () => {},
   signUp: () => {},
+  instance: null
 });
 
 const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-
+  const [instance, setInstance] = useState(null);
   const loginHandler = () => {
     const tokenLs = localStorage.getItem("token");
     if (tokenLs) {
@@ -83,7 +85,10 @@ const UserContextProvider = ({ children }) => {
         console.log("some server error need to be addressed");
       });
   };
-  useEffect(() => {}, []);
+  useEffect(() => {
+   const element = new TeleportAutocomplete({ el: ".my-input" });
+   setInstance(element);
+  }, []);
   return (
     <UserContext.Provider
       value={{
@@ -91,6 +96,7 @@ const UserContextProvider = ({ children }) => {
         token,
         login: loginHandler,
         signUp,
+        instance,
       }}
     >
       {children}

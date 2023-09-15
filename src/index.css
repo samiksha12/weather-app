@@ -178,7 +178,9 @@ code {
 .list-city-div{
   max-height:200px;
 }
-
+.last-update{
+  font-size: small;
+}
 @media screen and (max-width :575px) {
   .left-panel{
     border-right: 0px;
