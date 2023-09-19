@@ -11,7 +11,7 @@ function MainPage() {
     <Card className="m-2 overflow-x-hidden body-page">
       <div className="main-container">
         <div className="row">
-          <div className="col-12 col-sm-4">
+          <div className="col-12 col-sm-4 left-sidebar">
             <LeftSidebar></LeftSidebar>
           </div>
           <div className="col-12 col-sm-8 right-panel">

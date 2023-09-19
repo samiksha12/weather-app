@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Card from "../common/Card";
 import MiniWeather from "./MiniWeather";
-import { getDate, getDateTime } from "../common/Helper/helper";
+import { getDate, getDateTime, getTodaysHighlight } from "../common/Helper/helper";
+import { useDispatch } from "react-redux";
+import { todaysHighlightApiAction } from "../action/todaysHighlightApiAction";
 
 function TodaysCards(props) {
-  const customClass = "m-3 col-3 col-md-1";
-  const todaysData = props.data;
+  const customOuterClass = "m-3 col-3 col-md-1 clickable";
+  const customClass = "col-12 col-md-12";
+  const dispatch = useDispatch();
+  const todaysData = props.hourlyData;
+  const dailyData = props.dailyData;
+  const handleClick = (time,date) => {
+    const todaysHighlight = getTodaysHighlight(todaysData,dailyData,props.timezone,time,date);
+    todaysHighlight && Object.keys(todaysHighlight).length > 0 && dispatch(todaysHighlightApiAction(todaysHighlight));
+  };
   if (
     todaysData &&
     typeof todaysData === "object" &&
@@ -19,15 +28,24 @@ function TodaysCards(props) {
               const formatedDate = getDateTime(props.timezone);
               const todaysDate = getDate(formatedDate);
               const listDate = getDate(list);
-              if (listDate.day === todaysDate.day && listDate.unchangedHours >= todaysDate.unchangedHours) {
+              if (
+                listDate.day === todaysDate.day &&
+                listDate.unchangedHours >= todaysDate.unchangedHours
+              ) {
                 return (
-                  <Card className={customClass} key={index}>
-                    <MiniWeather hours={listDate.hours} suffix={listDate.suffix} temp={todaysData.temperature_2m[index]} weathercode={todaysData.weathercode[index]} is_day={todaysData.is_day[index]}>
-                    </MiniWeather>
-                  </Card>
+                  <div className={customOuterClass} key={index} onClick={()=>{handleClick(listDate.unchangedHours, listDate.day)}}>
+                    <Card className={customClass}>
+                      <MiniWeather
+                        hours={listDate.hours}
+                        suffix={listDate.suffix}
+                        temp={todaysData.temperature_2m[index]}
+                        weathercode={todaysData.weathercode[index]}
+                        is_day={todaysData.is_day[index]}
+                      ></MiniWeather>
+                    </Card>
+                  </div>
                 );
               }
-              
             })}
         </div>
       </>
@@ -42,4 +60,3 @@ function TodaysCards(props) {
 }
 
 export default TodaysCards;
-

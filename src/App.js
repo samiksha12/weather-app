@@ -10,7 +10,14 @@ import {
 import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
 import { weatherApiAction } from "./action/weatherApiAction";
 import { isCeciusAction } from "./action/isCelciusAction";
-import { changeTemperature } from "./common/Helper/helper";
+import {
+  changeTemperature,
+  getDate,
+  getDateTime,
+  getHighestValue,
+  getTodaysHighlight,
+} from "./common/Helper/helper";
+import { todaysHighlightApiAction } from "./action/todaysHighlightApiAction";
 
 function App() {
   const { user, login, instance } = useContext(UserContext);
@@ -18,6 +25,7 @@ function App() {
   const cityData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
   const isCelcius = useSelector((state) => state.is_celcius);
+  const todaysHighlightData = useSelector((state) => state.todaysHighlight);
   useEffect(() => {
     //init tooltip
     Array.from(
@@ -47,13 +55,13 @@ function App() {
           element.innerHTML = updatedTemp;
         }
       });
-      const degreeIconElements= document.querySelectorAll('.degree-icon');
-      degreeIconElements.forEach((element)=>{
+      const degreeIconElements = document.querySelectorAll(".degree-icon");
+      degreeIconElements.forEach((element) => {
         if (isCelcius.is_celcius === "farenhite") {
           element.innerHTML = "&deg;F";
         }
       });
-    },0);
+    }, 0);
   }, [isCelcius]);
   useEffect(() => {
     if (
@@ -75,7 +83,6 @@ function App() {
       const userData = { [user]: updateCityData };
       dispatch(saveCityApiAction(userData, user));
     }
-    // console.log(weatherData);
   }, [cityData, weatherData]);
   useEffect(() => {
     if (instance) {
@@ -93,6 +100,29 @@ function App() {
       });
     }
   }, [dispatch, instance]);
+  useEffect(() => {
+    if (cityData.data.length > 0 && weatherData.data.length > 0) {
+      const activeCity = cityData.data.filter((city) => city.active === true);
+      const activeWeather = weatherData.data.filter(
+        (weatherItem) => weatherItem.geonameId === activeCity[0].geonameId
+      );
+      let todaysData = {};
+      const formatedDate = getDateTime(activeCity[0].timezone);
+    const todaysDate = getDate(formatedDate);
+      activeCity[0] &&
+        activeWeather[0] &&
+        (todaysData = getTodaysHighlight(
+          activeWeather[0].hourly,
+          activeWeather[0].daily,
+          activeCity[0].timezone,
+          "",
+          todaysDate.day
+        ));
+
+      Object.keys(todaysData).length > 0 &&
+        dispatch(todaysHighlightApiAction(todaysData));
+    }
+  }, [weatherData, cityData]);
   return (
     <div className="App">
       <MainPage></MainPage>

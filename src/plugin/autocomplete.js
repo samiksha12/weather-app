@@ -465,12 +465,15 @@ class TeleportAutocomplete {
         name: uaName,
         ua_id: uaId,
         teleport_city_url: uaCityUrl,
+        _links: uaLinks
       } = city.urban_area;
-      assign(result, { uaName, uaId, uaCityUrl, uaSlug  });
+      const imageLink = uaLinks['ua:images'][0]?.href;
+      assign(result, { uaName, uaId, uaCityUrl, uaSlug , imageLink });
     }
 
     return result;
   }
+  
 }
 
 export default TeleportAutocomplete;

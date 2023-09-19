@@ -62,7 +62,7 @@ function WeatherTabs() {
           aria-labelledby="today-tab"
           tabIndex="0"
         >
-          {activeWeather && (activeWeather.length>0) && (<TodaysCards timezone={activeCity[0].timezone} data={activeWeather[0].hourly}></TodaysCards>)}
+          {activeWeather && (activeWeather.length>0) && (<TodaysCards timezone={activeCity[0].timezone} hourlyData={activeWeather[0].hourly} dailyData={activeWeather[0].daily}></TodaysCards>)}
         </div>
         <div
           className="tab-pane fade"
@@ -71,7 +71,7 @@ function WeatherTabs() {
           aria-labelledby="week-tab"
           tabIndex="0"
         >
-          {activeWeather && (activeWeather.length>0) && (<WeekilyCards timezone={activeCity[0].timezone} data={activeWeather[0].daily}></WeekilyCards>)}
+          {activeWeather && (activeWeather.length>0) && (<WeekilyCards timezone={activeCity[0].timezone} hourlyData={activeWeather[0].hourly} dailyData={activeWeather[0].daily}></WeekilyCards>)}
         </div>
       </div>
     </div>
