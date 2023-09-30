@@ -1,4 +1,4 @@
-import { SET_TEMP_UNIT } from "./type";
+import {  SET_TEMP_UNIT } from "./type";
 export function isCelciusSuccess(data) {
   return { type: SET_TEMP_UNIT, data: data };
 }
@@ -7,3 +7,4 @@ export function isCeciusAction(value) {
     dispatch(isCelciusSuccess(value));
   };
 }
+

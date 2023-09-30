@@ -14,8 +14,8 @@ function MiniWeekWeather(props) {
       <i className={`pe-2x ${weatherCode[props.weathercode]['weather-icon'][1]}`}></i>
       </div>
       <div>
-        <span className="temperature">{temperature_max}</span>
-        {degreeIcon} -  <span className="temperature">{temperature_min}</span>
+        <span className="temperature">{temperature_min}</span>
+        {degreeIcon} -  <span className="temperature">{temperature_max}</span>
         {degreeIcon}
       </div>
     </div>

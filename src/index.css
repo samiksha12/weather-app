@@ -6,15 +6,52 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.body-page {
-  height: 100vh !important;
-}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-.left-panel {
-  border-right: 1px solid black;
+
+
+
+.right-panel {
+  display: flex;
+  position: relative;
+  border-left: 1px solid #979797;
+  z-index: 1;
+}
+
+.right-sidebar {
+  position: relative;
+  flex: 1;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+.nav-link{
+  color:black !important;
+}
+h2{
+  color: #F2C62F !important;
+}
+.heading{
+  font-size: 80px;
+}
+.background-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  filter: blur(1px);
+  background-size: cover;
 }
 
 .tp-autocomplete {
@@ -143,7 +180,7 @@ code {
   overflow: hidden;
   &::after {
     content: "";
-    width: 153px;
+    width: 158px;
     height: 160px;
     border: 28px solid;
     border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) var(--fill)
@@ -186,15 +223,22 @@ code {
 .last-update {
   font-size: small;
 }
-.today-update{
+.medium-update{
+  font-size:13px;
+}
+.today-update {
   font-size: 14px;
+}
+.today-update i {
+  font-size: 7px;
+  vertical-align: middle;
 }
 .clickable {
   cursor: pointer;
 }
 .left-sidebar {
   position: relative;
-  /* padding-bottom: 200px; */
+  padding-bottom: 150px;
 }
 .image-div {
   position: absolute;
@@ -207,7 +251,7 @@ code {
 }
 
 .image-container {
-  max-height: 100px;
+  max-height: 80px;
   max-width: 100%;
   overflow: hidden;
 }
@@ -217,19 +261,50 @@ code {
   width: 100%;
   height: auto;
 }
-.diamond-fill{
-  font-size: 10px;
-  vertical-align: middle;
-}
 
+.temperature-value {
+  font-size: 100px;
+  font-weight: 400;
+  font-style: italic;
+}
+.today-weather {
+  padding: 3rem !important;
+  padding-bottom: 0px !important;
+}
+.today-date {
+  font-size: large;
+}
+.hr-line {
+  border-top: 1px solid #979797;
+}
+.see-detail-city{
+  font-size: 14px;
+}
 @media screen and (max-width: 575px) {
   .left-panel {
     border-right: 0px;
   }
   .image-div {
-    visibility: hidden;
+    /* visibility: hidden; */
+    /* display: none; */
+  }
+  /* .left-sidebar{
+    padding-bottom: 0px;
+  } */
+
+  .today-weather {
+    padding: 1rem !important;
+  }
+  .temperature-value {
+    font-size: 70px;
   }
   .sm-border-bottom {
     flex-wrap: nowrap !important;
+  }
+  .heading{
+    font-size: 37px;
+  }
+  .see-detail-city{
+    font-size: 8px;
   }
 }

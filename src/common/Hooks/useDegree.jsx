@@ -20,7 +20,7 @@ function useDegree() {
         if (newDegree === "celcius") {
           element.innerHTML = '&deg;C';
         }
-      })
+      });
     localStorage.setItem("degree", newDegree);
   };
   return [degree, toggleDegree];

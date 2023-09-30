@@ -2,23 +2,18 @@ import { DateTime } from "luxon";
 
 export function getDate(date) {
   const dateObject = DateTime.fromISO(date);
-  // Extract the date components
   const year = dateObject.year;
   const month = months[dateObject.month - 1];
   const day = dateObject.day;
   const weekday = dateObject.weekdayLong;
-  // Extract the time components
   let hours = dateObject.hour;
   const suffix = hours >= 12 ? "pm" : "am";
   hours = hours > 12 ? hours - 12 : hours;
-  hours = (hours == '0')? 12 : hours;
-
+  hours = hours === "0" ? 12 : hours;
   const unchangedHours = dateObject.hour;
-  const minutes = dateObject.minute;
+  const minutes = (dateObject.minute < 10 ? "0" : "") + dateObject.minute;
 
   return { year, month, day, hours, minutes, suffix, unchangedHours, weekday };
-  // (dateObject.getMinutes() < 10 ? "0" : "") + dateObject.getMinutes();
-  // return { year, month, day, hours, minutes, suffix, unchangedHours, weekday };
 }
 
 export const months = [
@@ -107,7 +102,7 @@ export function getTodaysHighlight(
   hourlyData,
   dailyData,
   timezone,
-  time="",
+  time = "",
   date
 ) {
   if (
@@ -121,53 +116,95 @@ export function getTodaysHighlight(
     const humidity = [];
     const visiblity = [];
     const winddirection = [];
-    let sunrise = "";
-    let sunset = "";
+    const temp = [];
+    const prob = [];
+    const feels =[];
     let weatherDate = "";
     let weatherTime = "";
     const formatedDate = getDateTime(timezone);
     const todaysDate = getDate(formatedDate);
     hourlyData.time.map((list, index) => {
       const listDate = getDate(list);
-      if (time === "") {
-        if (listDate.day === date) {
-          uvIndex.push(hourlyData.uv_index[index]);
-          windSpeed.push(hourlyData.windspeed_10m[index]);
-          humidity.push(hourlyData.relativehumidity_2m[index]);
-          visiblity.push(hourlyData.visibility[index]);
-          winddirection.push(hourlyData.winddirection_80m[index]);
-          weatherDate = listDate.weekday + ", " + listDate.day;
-        }
-      } else {
-        if (listDate.unchangedHours === time && listDate.day === date) {
-          uvIndex.push(hourlyData.uv_index[index]);
-          windSpeed.push(hourlyData.windspeed_10m[index]);
-          humidity.push(hourlyData.relativehumidity_2m[index]);
-          visiblity.push(hourlyData.visibility[index]);
-          winddirection.push(hourlyData.winddirection_80m[index]);
-          weatherTime = listDate.hours + " " + listDate.suffix;
-        }
+      if (listDate.unchangedHours === time && listDate.day === date) {
+        uvIndex.push(hourlyData.uv_index[index]);
+        windSpeed.push(hourlyData.windspeed_10m[index]);
+        humidity.push(hourlyData.relativehumidity_2m[index]);
+        visiblity.push(hourlyData.visibility[index]);
+        winddirection.push(hourlyData.winddirection_10m[index]);
+        temp.push(hourlyData.temperature_2m[index]);
+        prob.push(hourlyData.precipitation_probability[index]);
+        feels.push(hourlyData.apparent_temperature[index]);
+        weatherTime = listDate.hours + " " + listDate.suffix;
+      }
+    });
+    
+    todaysData.uvIndex = getHighestValue(uvIndex);
+    todaysData.windSpeed = getHighestValue(windSpeed);
+    todaysData.humidity = getHighestValue(humidity);
+    todaysData.visibility = getHighestValue(visiblity);
+    todaysData.winddirection = getHighestValue(winddirection);
+    todaysData.temp = getHighestValue(temp);
+    todaysData.prob = getHighestValue(prob);
+    todaysData.predict = predictPercipitation(prob,temp);
+    todaysData.feelsLike = getHighestValue(feels);
+    todaysData.weatherDate = weatherDate;
+    todaysData.weatherTime = weatherTime;
+    return todaysData;
+  }
+}
+
+export function getDailyHighlight(
+  hourlyData,
+  dailyData,
+  timezone,
+  time = "",
+  date
+) {
+  if (
+    Object.keys(hourlyData).length > 0 &&
+    Object.keys(dailyData).length > 0 &&
+    timezone
+  ) {
+    const todaysData = {};
+    const uvIndex = [];
+    const windSpeed = [];
+    const humidity = [];
+    const visiblity = [];
+    const winddirection = [];
+    const temp = [];
+    const prob = [];
+    let sunrise = "";
+    let sunset = "";
+    let weatherDate = "";
+    let weatherTime = "";
+    hourlyData.time.map((list, index) => {
+      const listDate = getDate(list);
+      if (listDate.day === date) {
+        humidity.push(hourlyData.relativehumidity_2m[index]);
+        visiblity.push(hourlyData.visibility[index]);
+        weatherDate = listDate.weekday + ", " + listDate.day;
       }
     });
     dailyData.time.map((list, index) => {
       const listDate = getDate(list);
-      if (listDate.day === todaysDate.day) {
+      if (listDate.day === date) {
+        uvIndex.push(dailyData.uv_index_max[index]);
+        windSpeed.push(dailyData.windspeed_10m_max[index]);
+        winddirection.push(dailyData.winddirection_10m_dominant[index]);
+        temp.push(dailyData.temperature_2m_max[index]);
+        prob.push(dailyData.precipitation_probability_max[index]);
         sunrise = dailyData.sunrise[index];
         sunset = dailyData.sunset[index];
       }
     });
-    const highIndex = getHighestValue(uvIndex);
-    let direction;
-    uvIndex.map((list, index) => {
-      if (list === highIndex) {
-        direction = winddirection[index];
-      }
-    });
-    todaysData.uvIndex = highIndex;
+    todaysData.uvIndex = getHighestValue(uvIndex);
     todaysData.windSpeed = getHighestValue(windSpeed);
     todaysData.humidity = getHighestValue(humidity);
     todaysData.visibility = getHighestValue(visiblity);
-    todaysData.winddirection = direction;
+    todaysData.winddirection = getHighestValue(winddirection);
+    todaysData.temp = getHighestValue(temp);
+    todaysData.prob = getHighestValue(prob);
+    todaysData.predict = predictPercipitation(prob,temp);
     todaysData.sunrise = sunrise;
     todaysData.sunset = sunset;
     todaysData.weatherDate = weatherDate;
@@ -175,3 +212,31 @@ export function getTodaysHighlight(
     return todaysData;
   }
 }
+export function predictPercipitation(percipitationProb, temperature) {
+  const prob = getHighestValue(percipitationProb);
+  const temp = getHighestValue(temperature);
+  if (prob >= 70) {
+    //high prob
+    if (temp < 0) {
+      return "Snowfall";
+    } else if (temp > 0 && temp <= 20) {
+      return "Rain";
+    } else if (temp > 20) {
+      return "Rain Showers";
+    } else {
+      return "High probability of percipitation";
+    }
+  } else if (prob >= 30 && prob < 70) {
+    //moderate prob
+    if (temp < 0) {
+      return "Snow Showers";
+    } else if (temp > 0) {
+      return "Rain showers";
+    } else {
+      return "Chance of percipitation";
+    }
+  } else {
+    return "Low Chance of percipitation";
+  }
+}
+

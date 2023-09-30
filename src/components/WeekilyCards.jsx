@@ -2,19 +2,19 @@ import React from "react";
 import useDegree from "../common/Hooks/useDegree";
 import Card from "../common/Card";
 import MiniWeather from "./MiniWeather";
-import { getDate, getDateTime, getTodaysHighlight } from "../common/Helper/helper";
+import { getDailyHighlight, getDate, getDateTime, getTodaysHighlight } from "../common/Helper/helper";
 import MiniWeekWeather from "./MiniWeekWeather";
 import { todaysHighlightApiAction } from "../action/todaysHighlightApiAction";
 import { useDispatch } from "react-redux";
 
 function WeekilyCards(props) {
   const customClass="col-12 col-md-12"
-  const customOuterClass = "m-2 col-4 col-md-2 clickable";
+  const customOuterClass = "m-2 col-6 col-md-2 clickable";
   const dispatch = useDispatch();
   const weeksData = props.dailyData;
   const hourlyData= props.hourlyData;
   const handleClick =(date)=>{
-    const todaysHighlight = getTodaysHighlight(hourlyData,weeksData,props.timezone,"",date);
+    const todaysHighlight = getDailyHighlight(hourlyData,weeksData,props.timezone,"",date);
     todaysHighlight && Object.keys(todaysHighlight).length > 0 && dispatch(todaysHighlightApiAction(todaysHighlight));
   }
   if (

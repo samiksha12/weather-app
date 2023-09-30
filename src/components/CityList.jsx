@@ -40,6 +40,7 @@ function CityList() {
             const { year, month, day, hours, minutes, suffix } = getDate(
               list.current_weather?.time
             );
+            const weatherIcon = (list.current_weather!== undefined)? weatherCode[list.current_weather?.weathercode]['weather-icon'][list.current_weather?.is_day] : "pe-is-w-sun-1";
             return (
               <a
                 href="#"
@@ -57,7 +58,7 @@ function CityList() {
                     {suffix}
                   </div>
                 </div>
-                <span className="px-2"><i className={`pe-2x ${weatherCode[list.current_weather?.weathercode]['weather-icon'][list.current_weather?.is_day]}`}></i></span>
+                <span className="px-2"><i className={`pe-2x ${weatherIcon}`}></i></span>
                 <span className="temperature">
                   {Math.round(list.current_weather?.temperature)}
                 </span>

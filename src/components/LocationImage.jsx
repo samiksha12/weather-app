@@ -43,9 +43,9 @@ function LocationImage() {
     }
   }, [cityData]);
 
-  return (
-    <div className="image-div p-3">
-      <div className="today-update text-center">Today: {activeTitle} <Icon className="diamond-fill px-1"></Icon>Date: {activeDate}</div>
+  return activeTitle && (
+    <div className="image-div p-3 col-md-10 col-10">
+      <div className="today-update text-center">Today: {activeTitle} <Icon className="circle-fill px-1"></Icon>Date: {activeDate}</div>
       <div className="image-container rounded">
         <img className="" src={activeImage} alt={activeAlt} />
       </div>

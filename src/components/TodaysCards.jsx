@@ -41,6 +41,7 @@ function TodaysCards(props) {
                         temp={todaysData.temperature_2m[index]}
                         weathercode={todaysData.weathercode[index]}
                         is_day={todaysData.is_day[index]}
+                        now = {listDate.unchangedHours === todaysDate.unchangedHours ? true : false}
                       ></MiniWeather>
                     </Card>
                   </div>

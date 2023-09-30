@@ -9,15 +9,14 @@ import {
 } from "./action/cityApiAction";
 import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
 import { weatherApiAction } from "./action/weatherApiAction";
-import { isCeciusAction } from "./action/isCelciusAction";
 import {
   changeTemperature,
+  getDailyHighlight,
   getDate,
   getDateTime,
-  getHighestValue,
-  getTodaysHighlight,
 } from "./common/Helper/helper";
 import { todaysHighlightApiAction } from "./action/todaysHighlightApiAction";
+import { seeDetailApiAction } from "./action/seeDetailApiAction";
 
 function App() {
   const { user, login, instance } = useContext(UserContext);
@@ -48,6 +47,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       const temperatureElements = document.querySelectorAll(".temperature");
+      const degreeIconElements = document.querySelectorAll(".degree-icon");
       temperatureElements.forEach((element) => {
         const temp = element.innerHTML;
         if (isCelcius.is_celcius === "farenhite") {
@@ -55,13 +55,12 @@ function App() {
           element.innerHTML = updatedTemp;
         }
       });
-      const degreeIconElements = document.querySelectorAll(".degree-icon");
       degreeIconElements.forEach((element) => {
         if (isCelcius.is_celcius === "farenhite") {
           element.innerHTML = "&deg;F";
         }
       });
-    }, 0);
+    }, 100);
   }, [isCelcius]);
   useEffect(() => {
     if (
@@ -96,6 +95,7 @@ function App() {
             dispatch(
               weatherApiAction(val.latitude, val.longitude, val.geonameId)
             );
+          dispatch(seeDetailApiAction("home"));
         }
       });
     }
@@ -108,10 +108,10 @@ function App() {
       );
       let todaysData = {};
       const formatedDate = getDateTime(activeCity[0].timezone);
-    const todaysDate = getDate(formatedDate);
+      const todaysDate = getDate(formatedDate);
       activeCity[0] &&
         activeWeather[0] &&
-        (todaysData = getTodaysHighlight(
+        (todaysData = getDailyHighlight(
           activeWeather[0].hourly,
           activeWeather[0].daily,
           activeCity[0].timezone,

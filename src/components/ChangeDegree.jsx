@@ -9,7 +9,8 @@ function ChangeDegree() {
   let degreeIcon = <span className="degree-icon">&deg;C</span>;
   useEffect(()=>{
     dispatch(isCeciusAction(degree));
-  },[dispatch,degree])
+  },[degree])
+  
   const handleClick=()=>{
     toggleDegree();
     
