@@ -35,7 +35,7 @@ function MainPage() {
     } else {
       setActiveImage("");
     }
-  }, [activeCity]);
+  }, [activeCity,isLoading]);
   return (
     <Card className="m-2 overflow-x-hidden body-page">
       <div className="main-container">
