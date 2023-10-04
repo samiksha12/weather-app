@@ -23,6 +23,7 @@ function App() {
   const dispatch = useDispatch();
   const cityData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
+  const isLoading = useSelector((state)=> state.weather.loading);
   const isCelcius = useSelector((state) => state.is_celcius);
   const todaysHighlightData = useSelector((state) => state.todaysHighlight);
   useEffect(() => {
@@ -45,46 +46,6 @@ function App() {
     }
   }, [user, dispatch]);
   useEffect(() => {
-    setTimeout(() => {
-      const temperatureElements = document.querySelectorAll(".temperature");
-      const degreeIconElements = document.querySelectorAll(".degree-icon");
-      temperatureElements.forEach((element) => {
-        const temp = element.innerHTML;
-        if (isCelcius.is_celcius === "farenhite") {
-          const updatedTemp = changeTemperature(temp, isCelcius.is_celcius);
-          element.innerHTML = updatedTemp;
-        }
-      });
-      degreeIconElements.forEach((element) => {
-        if (isCelcius.is_celcius === "farenhite") {
-          element.innerHTML = "&deg;F";
-        }
-      });
-    }, 100);
-  }, [isCelcius]);
-  useEffect(() => {
-    if (
-      user !== null &&
-      user !== "" &&
-      cityData.data.length > 0 &&
-      weatherData.data.length > 0
-    ) {
-      const updateCityData = cityData.data.map((city) => {
-        if (city.active === true) {
-          const weatherCurrent = weatherData.data.filter(
-            (weather) => weather.geonameId === city.geonameId
-          );
-          city.current_weather = weatherCurrent[0].current_weather;
-          return city;
-        }
-        return city;
-      });
-      console.log(updateCityData);
-      const userData = { [user]: updateCityData };
-      dispatch(saveCityApiAction(userData, user));
-    }
-  }, [cityData, weatherData]);
-  useEffect(() => {
     if (instance) {
       instance.on("change", function (val) {
         if (val && val.geonameId) {
@@ -106,6 +67,45 @@ function App() {
       });
     }
   }, [dispatch, instance]);
+  useEffect(() => {
+    setTimeout(() => {
+      const temperatureElements = document.querySelectorAll(".temperature");
+      const degreeIconElements = document.querySelectorAll(".degree-icon");
+      temperatureElements.forEach((element) => {
+        const temp = element.innerHTML;
+        if (isCelcius.is_celcius === "farenhite") {
+          const updatedTemp = changeTemperature(temp, isCelcius.is_celcius);
+          element.innerHTML = updatedTemp;
+        }
+      });
+      degreeIconElements.forEach((element) => {
+        if (isCelcius.is_celcius === "farenhite") {
+          element.innerHTML = "&deg;F";
+        }
+      });
+    }, 100);
+  }, [isCelcius]);
+  useEffect(() => {
+    if (
+      user !== null &&
+      user !== "" &&
+      cityData.data.length > 0 && !isLoading
+    ) {
+      const updateCityData = cityData.data.map((city) => {
+        if (city.active === true) {
+          const weatherCurrent = weatherData.data.filter(
+            (weather) => weather.geonameId === city.geonameId
+          );
+          city.current_weather = weatherCurrent[0].current_weather;
+          return city;
+        }
+        return city;
+      });
+      const userData = { [user]: updateCityData };
+      dispatch(saveCityApiAction(userData, user));
+    }
+  }, [cityData, weatherData,user,isLoading]);
+  
   useEffect(() => {
     if (cityData.data.length > 0 && weatherData.data.length > 0) {
       const activeCity = cityData.data.filter((city) => city.active === true);

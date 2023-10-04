@@ -4,6 +4,9 @@ import { someData } from "../data";
 export function weatherApiSuccess(data, geonameId) {
   return { type: types.WEATHER_API_SUCCESS, data: data, cityId: geonameId };
 }
+export function weatherApiLoading(){
+  return {type: types.WEATHER_IS_LOADING};
+}
 
 export function weatherApiAction(latitude, longitude, timezone, geonameId) {
   return (dispatch, getState) => {
@@ -16,6 +19,7 @@ export function weatherApiAction(latitude, longitude, timezone, geonameId) {
     const encodedTimezone = encodedParts.join("%2F");
     // console.log(encodedTimezone);
     if (!weatherExist) {
+      dispatch(weatherApiLoading());
       // dispatch(weatherApiSuccess(someData, geonameId));
       getWeatherData(latitude, longitude, encodedTimezone)
         .then((data) => {

@@ -10,6 +10,7 @@ import { weatherCode } from "../plugin/weather";
 function MainPage() {
   const citiesData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
+  const isLoading = useSelector((state)=> state.weather.loading);
   const home = useSelector((state) => state.seeDetails);
   const [activeImage, setActiveImage] = useState(nightsky);
   const [activeCity, setActiveCity] = useState();
@@ -20,7 +21,7 @@ function MainPage() {
   }, [citiesData]);
   useEffect(() => {
     let getImage = clearsky;
-    if (activeCity && activeCity[0]) {
+    if (activeCity && activeCity[0] && !isLoading) {
       const imageName =
         weatherCode[activeCity[0].current_weather.weathercode][
           "background-image"
@@ -45,14 +46,14 @@ function MainPage() {
           <div className="col-12 col-sm-8 right-panel">
             {citiesData.data.length > 0 &&
               weatherData.data.length > 0 &&
-              home.seeDetails === "home" && <RightSidebar></RightSidebar>}
+              home.seeDetails === "home" && !isLoading && <RightSidebar></RightSidebar>}
             {citiesData.data.length > 0 &&
               weatherData.data.length > 0 &&
-              home.seeDetails === "see-detail" && <SeeDetails></SeeDetails>}
-            <div
+              home.seeDetails === "see-detail" && !isLoading && <SeeDetails></SeeDetails>}
+            {activeImage && !isLoading && (<div
               className="background-blur"
               style={{ backgroundImage: `url(${activeImage})` }}
-            ></div>
+            ></div>)}
           </div>
         </div>
       </div>
