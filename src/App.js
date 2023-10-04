@@ -74,13 +74,12 @@ function App() {
           const weatherCurrent = weatherData.data.filter(
             (weather) => weather.geonameId === city.geonameId
           );
-
           city.current_weather = weatherCurrent[0].current_weather;
-
           return city;
         }
         return city;
       });
+      console.log(updateCityData);
       const userData = { [user]: updateCityData };
       dispatch(saveCityApiAction(userData, user));
     }
