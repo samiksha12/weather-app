@@ -13,7 +13,7 @@ function MainPage() {
   const home = useSelector((state) => state.seeDetails);
   const [activeImage, setActiveImage] = useState(nightsky);
   const [activeCity, setActiveCity] = useState();
-  const images = { clearsky: clearsky, nightsky: nightsky };
+  const images = {  nightsky: nightsky ,clearsky: clearsky};
   useEffect(() => {
     const activeList = citiesData.data.filter((city) => city.active === true);
     setActiveCity(activeList);

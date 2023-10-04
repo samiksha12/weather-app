@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 export function getDate(date) {
   const dateObject = DateTime.fromISO(date);
   const year = dateObject.year;
+  const monthNum = dateObject.month;
   const month = months[dateObject.month - 1];
   const day = dateObject.day;
   const weekday = dateObject.weekdayLong;
@@ -13,7 +14,7 @@ export function getDate(date) {
   const unchangedHours = dateObject.hour;
   const minutes = (dateObject.minute < 10 ? "0" : "") + dateObject.minute;
 
-  return { year, month, day, hours, minutes, suffix, unchangedHours, weekday };
+  return { year, month, day, hours, minutes, suffix, unchangedHours, weekday,monthNum };
 }
 
 export const months = [
@@ -89,7 +90,25 @@ const windDirections = {
   337.5: "North-northwest wind (NNW)",
   360: "North wind (N)",
 };
-
+const windAbervDirections = {
+  0: "(N)",
+  22.5: "(NNE)",
+  45: "(NE)",
+  67.5: "(ENE)",
+  90: "(E)",
+  112.5: "(ESE)",
+  135: "(SE)",
+  157.5: "(SSE)",
+  180: "(S)",
+  202.5: "(SSW)",
+  225: "(SW)",
+  247.5: "(WSW)",
+  270: "(W)",
+  292.5: "(WNW)",
+  315: "(NW)",
+  337.5: "(NNW)",
+  360: "(N)",
+};
 export function getWindDirection(degrees) {
   const normalizedDegrees = ((degrees % 360) + 360) % 360;
   const closestDirection = Object.keys(windDirections).reduce((a, b) =>
@@ -97,7 +116,13 @@ export function getWindDirection(degrees) {
   );
   return windDirections[closestDirection];
 }
-
+export function getWindAbervDirection(degrees) {
+  const normalizedDegrees = ((degrees % 360) + 360) % 360;
+  const closestDirection = Object.keys(windAbervDirections).reduce((a, b) =>
+    Math.abs(b - normalizedDegrees) < Math.abs(a - normalizedDegrees) ? b : a
+  );
+  return windAbervDirections[closestDirection];
+}
 export function getTodaysHighlight(
   hourlyData,
   dailyData,
@@ -118,7 +143,7 @@ export function getTodaysHighlight(
     const winddirection = [];
     const temp = [];
     const prob = [];
-    const feels =[];
+    const feels = [];
     let weatherDate = "";
     let weatherTime = "";
     const formatedDate = getDateTime(timezone);
@@ -137,7 +162,7 @@ export function getTodaysHighlight(
         weatherTime = listDate.hours + " " + listDate.suffix;
       }
     });
-    
+
     todaysData.uvIndex = getHighestValue(uvIndex);
     todaysData.windSpeed = getHighestValue(windSpeed);
     todaysData.humidity = getHighestValue(humidity);
@@ -145,7 +170,7 @@ export function getTodaysHighlight(
     todaysData.winddirection = getHighestValue(winddirection);
     todaysData.temp = getHighestValue(temp);
     todaysData.prob = getHighestValue(prob);
-    todaysData.predict = predictPercipitation(prob,temp);
+    todaysData.predict = predictPercipitation(prob, temp);
     todaysData.feelsLike = getHighestValue(feels);
     todaysData.weatherDate = weatherDate;
     todaysData.weatherTime = weatherTime;
@@ -204,7 +229,7 @@ export function getDailyHighlight(
     todaysData.winddirection = getHighestValue(winddirection);
     todaysData.temp = getHighestValue(temp);
     todaysData.prob = getHighestValue(prob);
-    todaysData.predict = predictPercipitation(prob,temp);
+    todaysData.predict = predictPercipitation(prob, temp);
     todaysData.sunrise = sunrise;
     todaysData.sunset = sunset;
     todaysData.weatherDate = weatherDate;
@@ -233,10 +258,42 @@ export function predictPercipitation(percipitationProb, temperature) {
     } else if (temp > 0) {
       return "Rain showers";
     } else {
-      return "Chance of percipitation";
+      return "Showers";
     }
   } else {
-    return "Low Chance of percipitation";
+    return "Rain";
   }
 }
 
+export function airIndexQuality(aqi_25) {
+  if (aqi_25 > 0 && aqi_25 <= 12) {
+    return { quality: "Good", color: "green" };
+  }
+  if (aqi_25 > 12 && aqi_25 <= 35.5) {
+    return { quality: "Moderate", color: "yellow" };
+  }
+  if (aqi_25 > 35.5 && aqi_25 <= 55.5) {
+    return { quality: "Unhealthy for sensitive groups", color: "#F0A741" };
+  }
+  if (aqi_25 > 55.5 && aqi_25 <= 150.5) {
+    return { quality: "Unhealthy", color: "#FF504F" };
+  }
+  if (aqi_25 > 150.5 && aqi_25 <= 250.5) {
+    return { quality: "Very Unhealthy", color: "#960132" };
+  }
+  if (aqi_25 > 250.5 && aqi_25 <= 500.5) {
+    return { quality: "Hazerdous", color: "#7D2181" };
+  }
+}
+
+export function airIndexQualityLabel(aqi,pm25,pm10){
+  if(aqi === pm25){
+    return "pm25";
+  }else if(aqi === pm10){
+    return "pm10";
+  }else if(aqi === pm25 && aqi=== pm10){
+    return "pm25";
+  }else{
+    return "invalid";
+  }
+}

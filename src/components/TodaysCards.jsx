@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Card from "../common/Card";
 import MiniWeather from "./MiniWeather";
 import { getDate, getDateTime, getTodaysHighlight } from "../common/Helper/helper";
@@ -29,7 +29,7 @@ function TodaysCards(props) {
               const todaysDate = getDate(formatedDate);
               const listDate = getDate(list);
               if (
-                listDate.day === todaysDate.day &&
+                (listDate.monthNum === todaysDate.monthNum && listDate.day === todaysDate.day) &&
                 listDate.unchangedHours >= todaysDate.unchangedHours
               ) {
                 return (
@@ -47,6 +47,7 @@ function TodaysCards(props) {
                   </div>
                 );
               }
+              return null;
             })}
         </div>
       </>

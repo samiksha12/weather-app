@@ -128,13 +128,13 @@ function TodaysHighlight() {
               <div className="d-flex flex-column justify-content-center text-center m-3">
                 <div>Feels Like</div>
                 <div className="d-flex justify-content-center align-items-center">
-                  <span className="temperature wind-value">
+                  <span className="temperature1 wind-value">
                     {isNaN(tempFeels) ? "N/A" : tempFeels}
                   </span>
                   <span className="degree-icon wind-unit">{icon}</span>
                 </div>
                 <div className="d-flex justify-content-center align-items-center last-update">
-                  Real Temperature :&nbsp;<span className="temperature">
+                  Real Temperature :&nbsp;<span className="temperature1">
                     {isNaN(temp) ? "N/A" : temp}
                   </span>
                   <span className="degree-icon">{icon}</span>

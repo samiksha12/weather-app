@@ -62,8 +62,14 @@ export const getImageLink = async (link) => {
   return data;
 };
 
-export const getWeatherData = async (latitude, longitude) => {
-  // const resp =await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,precipitation,rain,showers,snowfall,snow_depth,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,precipitation_probability_max,windspeed_10m_max,winddirection_10m_dominant&timezone=auto&current_weather=true`);
-  // const data = await resp.json();
-  // return data;
+export const getWeatherData = async (latitude, longitude,timezone) => {
+  const resp =await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,apparent_temperature,relativehumidity_2m,precipitation_probability,precipitation,rain,showers,snowfall,snow_depth,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index,is_day&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,precipitation_probability_max,windspeed_10m_max,winddirection_10m_dominant&timezone=${timezone}&current_weather=true`);
+  const data = await resp.json();
+  return data;
 };
+
+export const getAirQualityIndex = async(latitude,longitude)=>{
+  const resp = await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&hourly=us_aqi,us_aqi_pm2_5,us_aqi_pm10&domains=cams_global`);
+  const data = await resp.json();
+  return data;
+}

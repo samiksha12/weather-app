@@ -74,7 +74,9 @@ function App() {
           const weatherCurrent = weatherData.data.filter(
             (weather) => weather.geonameId === city.geonameId
           );
-          city.current_weather = weatherCurrent[0].current_weather;
+          if (weatherCurrent.length > 0) {
+            city.current_weather = weatherCurrent[0].current_weather;
+          }
           return city;
         }
         return city;
@@ -93,7 +95,7 @@ function App() {
           typeof val !== undefined &&
             typeof val === "object" &&
             dispatch(
-              weatherApiAction(val.latitude, val.longitude, val.geonameId)
+              weatherApiAction(val.latitude, val.longitude,val.timezone, val.geonameId)
             );
           dispatch(seeDetailApiAction("home"));
         }

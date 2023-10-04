@@ -1,8 +1,6 @@
 import React from "react";
-import useDegree from "../common/Hooks/useDegree";
 import Card from "../common/Card";
-import MiniWeather from "./MiniWeather";
-import { getDailyHighlight, getDate, getDateTime, getTodaysHighlight } from "../common/Helper/helper";
+import { getDailyHighlight, getDate, getDateTime } from "../common/Helper/helper";
 import MiniWeekWeather from "./MiniWeekWeather";
 import { todaysHighlightApiAction } from "../action/todaysHighlightApiAction";
 import { useDispatch } from "react-redux";
@@ -30,7 +28,10 @@ function WeekilyCards(props) {
               const formatedDate = getDateTime(props.timezone);
               const todaysDate = getDate(formatedDate);
               const listDate = getDate(list);
-              if (listDate.day >= todaysDate.day) {
+              if (
+                (listDate.monthNum > todaysDate.monthNum && listDate.day >= todaysDate.day) ||
+                (listDate.monthNum === todaysDate.monthNum && listDate.day >= todaysDate.day)
+              ) {
                 return (
                   <div className={customOuterClass} key={index} onClick={()=>{handleClick(listDate.day)}}>
                   <Card className={customClass}>

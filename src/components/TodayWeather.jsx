@@ -15,8 +15,8 @@ function TodayWeather() {
   const dispatch = useDispatch();
   const [home, toggleHome] = useHome();
   const [temperature, setTemperature] = useState(0);
-  const [probability,setProbability]=useState();
-  const [prob,setProb]=useState();
+  const [probability, setProbability] = useState();
+  const [prob, setProb] = useState();
   let btnName = "See Details";
   btnName = home === "home" ? "See Details" : "Back";
   useEffect(() => {
@@ -28,18 +28,22 @@ function TodayWeather() {
       const data = weatherData.data.filter(
         (weatherItem) => weatherItem.geonameId === activeCity[0].geonameId
       );
-      const current_weather = data[0].current_weather;
-      data[0].hourly.time.map((list, index) => {
-        if (list === current_weather.time) {
-          const prob = predictPercipitation(
-            data[0].hourly.precipitation_probability[index],
-            data[0].hourly.temperature_2m[index]
-          );
-          setProbability(prob);
-          setProb(data[0].hourly.precipitation_probability[index])
-        }
-      });
-      setActiveWeather(current_weather);
+      if (data.length > 0) {
+        const current_time = getDate(data[0].current_weather.time);
+        const current_weather = data[0].current_weather;
+        data[0].hourly.time.map((list, index) => {
+          const listDate = getDate(list);
+          if (listDate.unchangedHours === current_time.unchangedHours) {
+            const probabl = predictPercipitation(
+              data[0].hourly.precipitation_probability[index],
+              data[0].hourly.temperature_2m[index]
+            );
+            setProbability(probabl);
+            setProb(data[0].hourly.precipitation_probability[index]);
+          }
+        });
+        setActiveWeather(current_weather);
+      }
     }
   }, [activeCity, weatherData]);
   let degreeIcon = <span className="degree-icon">&deg;C</span>;
@@ -113,7 +117,9 @@ function TodayWeather() {
             {weatherCode[activeWeather.weathercode]["weather-condition"]}
           </div>
           <div>
-            <span className="px-2">{probability} - {prob}%</span>
+            <span className="px-2">
+              {probability} - {prob}%
+            </span>
           </div>
         </div>
       </>

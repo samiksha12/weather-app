@@ -12,8 +12,6 @@ code {
     monospace;
 }
 
-
-
 .right-panel {
   display: flex;
   position: relative;
@@ -33,15 +31,15 @@ code {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-
-.nav-link{
-  color:black !important;
+.nav-link {
+  color: black !important;
 }
-h2{
-  color: #F2C62F !important;
+h2 {
+  color: white !important;
 }
-.heading{
+.heading {
   font-size: 80px;
+  color: white;
 }
 .background-blur {
   position: absolute;
@@ -52,6 +50,8 @@ h2{
   z-index: 0;
   filter: blur(1px);
   background-size: cover;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 .tp-autocomplete {
@@ -223,8 +223,8 @@ h2{
 .last-update {
   font-size: small;
 }
-.medium-update{
-  font-size:13px;
+.medium-update {
+  font-size: 13px;
 }
 .today-update {
   font-size: 14px;
@@ -277,21 +277,99 @@ h2{
 .hr-line {
   border-top: 1px solid #979797;
 }
-.see-detail-city{
+.see-detail-city {
   font-size: 14px;
+  color: white;
 }
+.sun-dial {
+  width: 100px;
+  height: 50px;
+  position: relative;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+  border: 5px solid #f25c52;
+  border-bottom: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  /* overflow: hidden; */
+}
+.sun-dial-time {
+  font-size: 10px;
+  color: #f25c52;
+  width: 110px;
+}
+.sun-dial-outerdiv {
+  margin-right: 3rem;
+}
+.sun-icon1 {
+  color: #f25c52;
+  border-radius: 50%;
+  position: absolute;
+  background-color: lightgoldenrodyellow;
+  display: block;
+  top: 50%;
+  left: 30%;
+  margin: 6px;
+  overflow: hidden;
+  /* left: 0; */
+  /* transition: left 2s; */
+}
+.custom-accordion-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordianDetail {
+  float: right;
+}
+.accordion-button::after {
+  margin-left: 0 !important;
+}
+
+
+/* .border-green{
+  border-color: green;
+}
+.border-yellow{
+  border-color: yellow;
+}
+.border-orange{
+  border-color: #F0A741;
+}
+.border-red{
+  border-color: #FF504F;
+}
+.border-maroon{
+  border-color: #960132;
+}
+.border-darkm{
+  border-color: #7D2181;
+} */
+
 @media screen and (max-width: 575px) {
   .left-panel {
     border-right: 0px;
   }
-  .image-div {
-    /* visibility: hidden; */
-    /* display: none; */
+  .sun-dial {
+    width: 50px;
+    height: 25px;
+    border: 2px solid #f25c52;
+    border-bottom: 0;
   }
-  /* .left-sidebar{
-    padding-bottom: 0px;
-  } */
 
+  .sun-dial-time {
+    font-size: 7px;
+    width: 60px;
+  }
+  .sun-dial-outerdiv {
+    margin-right: 0;
+  }
+  .sun-icon1 {
+    margin: -4px;
+    transform: translate(25px) rotate(0deg);
+  }
   .today-weather {
     padding: 1rem !important;
   }
@@ -301,10 +379,17 @@ h2{
   .sm-border-bottom {
     flex-wrap: nowrap !important;
   }
-  .heading{
+  .heading {
     font-size: 37px;
   }
-  .see-detail-city{
-    font-size: 8px;
+  .see-detail-city {
+    font-size: 10px;
+  }
+  .accordian-detail {
+    flex-direction: column;
+  }
+  .p-body {
+    max-height: 50px;
+    overflow-y: auto;
   }
 }

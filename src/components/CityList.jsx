@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCityApiAction, getCustomCity } from "../action/cityApiAction";
 import { UserContext } from "../context/UserContext";
-import { getDate } from "../common/Helper/helper";
+import { changeTemperature, getDate } from "../common/Helper/helper";
 import useDegree from "../common/Hooks/useDegree";
 import { weatherCode } from "../plugin/weather";
 
@@ -11,6 +11,7 @@ function CityList() {
   const cityData = useSelector((state) => state.city);
   const { user, instance } = useContext(UserContext);
   const [sortedData, setSortedData] = useState();
+  const isCelcius = useSelector((state) => state.is_celcius);
   let degreeIcon = <span className="degree-icon">&deg;C</span>;
   const handleDelete = (data, geonameId) => {
     dispatch(deleteCityApiAction(data, geonameId, user));
@@ -31,12 +32,28 @@ function CityList() {
     setSortedData(updatedData);
   }, [cityData]);
 
+
+  function getTemperature(temp,is_celcius){
+    if (is_celcius === "farenhite") {
+      const temperature = changeTemperature(
+        Math.round(temp),
+        "farenhite"
+      );
+        const icon = "\u00b0F";
+        return {temperature,icon}
+    } else {
+      const temperature = Math.round(temp);
+      const icon = "\u00b0C";
+      return {temperature,icon}
+    }
+  }
   return (
     <>
       <ul className="list-group list-group-flush" id="list-group-city">
         {cityData.data &&
-          sortedData &&
+          sortedData && isCelcius &&
           sortedData.map((list, index) => {
+            const {temperature,icon} = getTemperature(Math.round(list.current_weather?.temperature),isCelcius.is_celcius);
             const { year, month, day, hours, minutes, suffix } = getDate(
               list.current_weather?.time
             );
@@ -59,10 +76,10 @@ function CityList() {
                   </div>
                 </div>
                 <span className="px-2"><i className={`pe-2x ${weatherIcon}`}></i></span>
-                <span className="temperature">
-                  {Math.round(list.current_weather?.temperature)}
+                <span className="temperature1">
+                  {temperature}
                 </span>
-                {degreeIcon}
+                <span className="degree-icon">{icon}</span>
                 <button
                   className="btn"
                   onClick={(e) => {
