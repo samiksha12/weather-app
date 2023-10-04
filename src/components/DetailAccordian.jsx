@@ -103,7 +103,7 @@ function DetailAccordian(props) {
             >
               <div className="accordion-body">
                 <div className="d-flex justify-content-center accordian-detail">
-                  <div className="col-md-3 col-5 text-center">
+                  <div className="col-md-3 col-12 text-center">
                     <span style={{ color: activeAirQuality.color }}>
                       {activeAirQuality.quality}
                     </span>

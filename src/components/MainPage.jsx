@@ -10,12 +10,12 @@ import { weatherCode } from "../plugin/weather";
 function MainPage() {
   const citiesData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
-  const isLoading = useSelector((state)=> state.weather.loading);
-  const isLoadingCity = useSelector((state)=> state.city.loading);
+  const isLoading = useSelector((state) => state.weather.loading);
+  const isLoadingCity = useSelector((state) => state.city.loading);
   const home = useSelector((state) => state.seeDetails);
   const [activeImage, setActiveImage] = useState(nightsky);
   const [activeCity, setActiveCity] = useState();
-  const images = {  nightsky: nightsky ,clearsky: clearsky};
+  const images = { nightsky: nightsky, clearsky: clearsky };
   useEffect(() => {
     const activeList = citiesData.data.filter((city) => city.active === true);
     setActiveCity(activeList);
@@ -23,12 +23,17 @@ function MainPage() {
   useEffect(() => {
     let getImage = clearsky;
     if (activeCity && activeCity[0] && !isLoading && !isLoadingCity) {
-      const imageName =
-        weatherCode[activeCity[0].current_weather.weathercode][
-          "background-image"
-        ][activeCity[0].current_weather.is_day];
-      if (images[imageName]) {
-        getImage = images[imageName];
+      if (
+        activeCity[0].current_weather &&
+        activeCity[0].current_weather.weathercode
+      ) {
+        const imageName =
+          weatherCode[activeCity[0].current_weather.weathercode][
+            "background-image"
+          ][activeCity[0].current_weather.is_day];
+        if (images[imageName]) {
+          getImage = images[imageName];
+        }
       }
     }
     if (getImage !== "") {
@@ -36,7 +41,7 @@ function MainPage() {
     } else {
       setActiveImage("");
     }
-  }, [activeCity,isLoading,isLoadingCity]);
+  }, [activeCity, isLoading, isLoadingCity]);
   return (
     <Card className="m-2 overflow-x-hidden body-page">
       <div className="main-container">
@@ -47,14 +52,18 @@ function MainPage() {
           <div className="col-12 col-sm-8 right-panel">
             {citiesData.data.length > 0 &&
               weatherData.data.length > 0 &&
-              home.seeDetails === "home" && !isLoading && <RightSidebar></RightSidebar>}
+              home.seeDetails === "home" &&
+              !isLoading && <RightSidebar></RightSidebar>}
             {citiesData.data.length > 0 &&
               weatherData.data.length > 0 &&
-              home.seeDetails === "see-detail" && !isLoading && <SeeDetails></SeeDetails>}
-            {activeImage && !isLoading && !isLoadingCity && (<div
-              className="background-blur"
-              style={{ backgroundImage: `url(${activeImage})` }}
-            ></div>)}
+              home.seeDetails === "see-detail" &&
+              !isLoading && <SeeDetails></SeeDetails>}
+            {activeImage && !isLoading && !isLoadingCity && (
+              <div
+                className="background-blur"
+                style={{ backgroundImage: `url(${activeImage})` }}
+              ></div>
+            )}
           </div>
         </div>
       </div>
