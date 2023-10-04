@@ -33,7 +33,7 @@ function TodayWeather() {
         const current_weather = data[0].current_weather;
         data[0].hourly.time.map((list, index) => {
           const listDate = getDate(list);
-          if (listDate.unchangedHours === current_time.unchangedHours) {
+          if (listDate.unchangedHours === current_time.unchangedHours && listDate.day === current_time.day) {
             const probabl = predictPercipitation(
               data[0].hourly.precipitation_probability[index],
               data[0].hourly.temperature_2m[index]

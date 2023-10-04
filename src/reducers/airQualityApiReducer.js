@@ -1,7 +1,12 @@
-import { AIR_QUALITY_SUCCESS } from "../action/type";
-
-function airQualityApiReducer(state = { data: [] }, action) {
+import { AIR_QUALITY_LOADING, AIR_QUALITY_SUCCESS } from "../action/type";
+const initialState = {
+  loading: false,
+  data: [],
+};
+function airQualityApiReducer(state = initialState, action) {
   switch (action.type) {
+    case AIR_QUALITY_LOADING:
+      return { ...state, loading: true };
     case AIR_QUALITY_SUCCESS:
       if (action.data === null || action.data === undefined) {
         return state;
@@ -18,7 +23,7 @@ function airQualityApiReducer(state = { data: [] }, action) {
       if (!geoNameId) {
         updatedData.push({ ...action.data, geonameId: action.cityId });
       }
-      return { ...state, data: updatedData };
+      return { ...state, data: updatedData, loading: false };
     default:
       return state;
   }

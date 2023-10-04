@@ -17,6 +17,7 @@ function DetailAccordian(props) {
   const aqi = 30;
   const isCelcius = useSelector((state) => state.is_celcius);
   const airQuality = useSelector((state) => state.airQuality);
+  const isLoadingAir = useSelector((state)=> state.airQuality.loading);
   const dispatch = useDispatch();
   const weather = props.weather;
   const [temp, setTemp] = useState();
@@ -53,7 +54,7 @@ function DetailAccordian(props) {
       weather &&
       Object.keys(weather).length > 0 &&
       airQuality &&
-      airQuality.data.length > 0
+      airQuality.data.length > 0 && !isLoadingAir
     ) {
       const data = airQuality.data.filter(
         (item) => item.geonameId === weather.geonameId
@@ -78,11 +79,11 @@ function DetailAccordian(props) {
         });
       }
     }
-  }, [weather, airQuality]);
+  }, [weather, airQuality,isLoadingAir]);
   return (
     <div className="m-2 p-2">
       <div className="accordion accordion-flush" id="seeDetailAccordian">
-        {activeAirQuality && Object.keys(activeAirQuality).length > 0 && (
+        {activeAirQuality && Object.keys(activeAirQuality).length > 0 && !isLoadingAir && (
           <div className="accordion-item">
             <div
               className="accordion-button collapsed d-flex"
