@@ -80,7 +80,7 @@ function TodaysHighlight() {
               <div>UV Index</div>
               <div>
                 <div
-                  className="curve-bar"
+                  className="curve-bar col-md-12 col-12"
                   style={{ "--value": uvIndex, "--fill": "#FF3D00" }}
                 >
                   {isNaN(uvIndex) ? "N/A" : uvIndex}

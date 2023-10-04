@@ -11,6 +11,7 @@ function MainPage() {
   const citiesData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
   const isLoading = useSelector((state)=> state.weather.loading);
+  const isLoadingCity = useSelector((state)=> state.city.loading);
   const home = useSelector((state) => state.seeDetails);
   const [activeImage, setActiveImage] = useState(nightsky);
   const [activeCity, setActiveCity] = useState();
@@ -21,7 +22,7 @@ function MainPage() {
   }, [citiesData]);
   useEffect(() => {
     let getImage = clearsky;
-    if (activeCity && activeCity[0] && !isLoading) {
+    if (activeCity && activeCity[0] && !isLoading && !isLoadingCity) {
       const imageName =
         weatherCode[activeCity[0].current_weather.weathercode][
           "background-image"
@@ -35,7 +36,7 @@ function MainPage() {
     } else {
       setActiveImage("");
     }
-  }, [activeCity,isLoading]);
+  }, [activeCity,isLoading,isLoadingCity]);
   return (
     <Card className="m-2 overflow-x-hidden body-page">
       <div className="main-container">
@@ -50,7 +51,7 @@ function MainPage() {
             {citiesData.data.length > 0 &&
               weatherData.data.length > 0 &&
               home.seeDetails === "see-detail" && !isLoading && <SeeDetails></SeeDetails>}
-            {activeImage && !isLoading && (<div
+            {activeImage && !isLoading && !isLoadingCity && (<div
               className="background-blur"
               style={{ backgroundImage: `url(${activeImage})` }}
             ></div>)}
