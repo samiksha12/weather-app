@@ -24,6 +24,7 @@ function App() {
   const cityData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
   const isLoading = useSelector((state)=> state.weather.loading);
+  const isLoadingCity = useSelector((state)=>state.city.loading);
   const isCelcius = useSelector((state) => state.is_celcius);
   const todaysHighlightData = useSelector((state) => state.todaysHighlight);
   useEffect(() => {
@@ -129,6 +130,9 @@ function App() {
         dispatch(todaysHighlightApiAction(todaysData));
     }
   }, [weatherData, cityData]);
+  if(isLoadingCity){
+    return <div className="m-auto">Loading...</div>
+  }
   return (
     <div className="App">
       <MainPage></MainPage>

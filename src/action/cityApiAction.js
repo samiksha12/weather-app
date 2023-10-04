@@ -43,6 +43,7 @@ export function currentApiAction(instance) {
 
 export function deleteCityApiAction(citydata, geoNameId, user) {
   return (dispatch) => {
+    dispatch(cityApiLoading());
     dispatch(cityApiDelete(geoNameId));
     deleteData(DELETE_DATA, citydata, user)
       .then((data) => {})
@@ -82,9 +83,11 @@ export function getCityApiAction(user, instance) {
               if (item.active === true) {
                 dispatch(getCustomCity(item, instance));
               }
+              dispatch(cityApiLoading());
               dispatch(oldCityApiSuccess(item));
             });
           } else {
+            dispatch(cityApiLoading());
             dispatch(currentApiAction(instance));
           }
         })

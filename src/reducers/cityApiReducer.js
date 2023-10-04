@@ -1,9 +1,12 @@
 import * as types from "../action/type";
-
-export default function cityApiReducer(state = { data: [] }, action) {
+const initialState = {
+  loading:false,
+  data:[]
+}
+export default function cityApiReducer(state = initialState, action) {
   switch (action.type) {
     case types.CITY_API_LOADING:
-      return { ...state, data: [...state.data], loading: true };
+      return { ...state, loading: true };
     case types.CITY_API_SUCCESS:
       if (action.data === undefined || action.data === null) {
         return state;
@@ -26,14 +29,15 @@ export default function cityApiReducer(state = { data: [] }, action) {
         updatedData.push(action.data);
       }
 
-      return { ...state, data: updatedData };
+      return { ...state, data: updatedData , loading:false };
     case types.CITY_API_DELETE:
       return {
         ...state,
         data: state.data.filter((city) => city.geonameId !== action.data),
+        loading:false
       };
     case types.CITY_API_ERROR:
-      return { ...state, data: [...state.data, action.data] };
+      return { ...state, data: [...state.data, action.data],loading:false };
     case types.OLD_CITY_API_SUCCESS:
       if (action.data === undefined || action.data === null) {
         return state;
@@ -42,9 +46,9 @@ export default function cityApiReducer(state = { data: [] }, action) {
         (city) => city.geonameId === action.data.geonameId
       );
       if (!geonameId) {
-        return { ...state, data: [...state.data, action.data] };
+        return { ...state, data: [...state.data, action.data],loading:false };
       }
-      return state;
+      return {...state,loading:false};
     default:
       return state;
   }
