@@ -6,6 +6,5 @@
 
 
 # Extra details about AirIndex , Feels Like 
-<img width="1000" alt="Screenshot 2023-10-04 at 2 09 53 PM" src="https://github.com/samiksha12/weather-app/assets/21308981/37051e49-d110-4a34-80f0-ec34ab9f47d6">
 
 <img width="1000" alt="weather3" src="https://github.com/samiksha12/weather-app/assets/21308981/010efc6a-de5f-4784-976e-299dc43ce7a5">
