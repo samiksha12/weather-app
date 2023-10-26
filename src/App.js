@@ -7,7 +7,8 @@ import {
   getCityApiAction,
   saveCityApiAction,
 } from "./action/cityApiAction";
-import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
+import Tooltip from 'bootstrap/dist/js/bootstrap.bundle';
+//import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
 import { weatherApiAction } from "./action/weatherApiAction";
 import {
   changeTemperature,
@@ -27,13 +28,13 @@ function App() {
   const isLoadingCity = useSelector((state)=>state.city.loading);
   const isCelcius = useSelector((state) => state.is_celcius);
   const todaysHighlightData = useSelector((state) => state.todaysHighlight);
-  useEffect(() => {
+  /*useEffect(() => {
     //init tooltip
     Array.from(
       document.querySelectorAll('button[data-bs-toggle="tooltip"]')
     ).forEach((tooltipNode) => new Tooltip(tooltipNode, { trigger: "hover" }));
   });
-
+*/
   useEffect(() => {
     try {
       login();
