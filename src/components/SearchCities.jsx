@@ -53,7 +53,6 @@ function SearchCities() {
             className="btn btn-outline-dark rounded-circle"
             data-bs-toggle="tooltip"
             data-bs-title="Manage Locations"
-            title="Manage Loactions"
             // onClick={handleCurrent}
           >
             <Icon className="sliders2-vertical"></Icon>
