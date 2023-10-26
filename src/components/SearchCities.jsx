@@ -34,6 +34,7 @@ function SearchCities() {
             className="btn btn-outline-dark rounded-circle geolocate"
             data-bs-toggle="tooltip"
             data-bs-title="Current location"
+            title="Current location"
             onClick={handleCurrent}
           >
             <Icon className="geo"></Icon>
@@ -52,6 +53,7 @@ function SearchCities() {
             className="btn btn-outline-dark rounded-circle"
             data-bs-toggle="tooltip"
             data-bs-title="Manage Locations"
+            title="Manage Loactions"
             // onClick={handleCurrent}
           >
             <Icon className="sliders2-vertical"></Icon>
