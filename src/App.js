@@ -7,8 +7,8 @@ import {
   getCityApiAction,
   saveCityApiAction,
 } from "./action/cityApiAction";
-import Tooltip from 'bootstrap/dist/js/bootstrap.bundle';
-//import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
+//import Tooltip from 'bootstrap/dist/js/bootstrap.bundle';
+import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
 import { weatherApiAction } from "./action/weatherApiAction";
 import {
   changeTemperature,
