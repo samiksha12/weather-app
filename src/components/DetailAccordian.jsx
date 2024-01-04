@@ -14,7 +14,6 @@ import { airQualityApiAction } from "../action/airQualityApiAction";
 function DetailAccordian(props) {
   const uvIndex = Math.round(props.currentHighlight.uvIndex);
   const humidity = props.currentHighlight.humidity;
-  const aqi = 30;
   const isCelcius = useSelector((state) => state.is_celcius);
   const airQuality = useSelector((state) => state.airQuality);
   const isLoadingAir = useSelector((state)=> state.airQuality.loading);
