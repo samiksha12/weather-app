@@ -7,7 +7,7 @@ import {
   getCityApiAction,
   saveCityApiAction,
 } from "./action/cityApiAction";
-//import Tooltip from 'bootstrap/dist/js/bootstrap.bundle';
+// import Tooltip from 'bootstrap/dist/js/bootstrap.bundle';
 import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
 import { weatherApiAction } from "./action/weatherApiAction";
 import {
@@ -20,14 +20,14 @@ import { todaysHighlightApiAction } from "./action/todaysHighlightApiAction";
 import { seeDetailApiAction } from "./action/seeDetailApiAction";
 
 function App() {
-  const { user, login, instance } = useContext(UserContext);
+  const { user, login, instance} = useContext(UserContext);
   const dispatch = useDispatch();
   const cityData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
-  const isLoading = useSelector((state)=> state.weather.loading);
-  const isLoadingCity = useSelector((state)=>state.city.loading);
+  const isLoading = useSelector((state) => state.weather.loading);
+  const isLoadingCity = useSelector((state) => state.city.loading);
   const isCelcius = useSelector((state) => state.is_celcius);
-  const todaysHighlightData = useSelector((state) => state.todaysHighlight);
+  // const todaysHighlightData = useSelector((state) => state.todaysHighlight);
   useEffect(() => {
     //init tooltip
     Array.from(
@@ -90,7 +90,8 @@ function App() {
     if (
       user !== null &&
       user !== "" &&
-      cityData.data.length > 0 && !isLoading
+      cityData.data.length > 0 &&
+      !isLoading
     ) {
       const updateCityData = cityData.data.map((city) => {
         if (city.active === true) {
@@ -105,8 +106,8 @@ function App() {
       const userData = { [user]: updateCityData };
       dispatch(saveCityApiAction(userData, user));
     }
-  }, [cityData, weatherData,user,isLoading]);
-  
+  }, [cityData, weatherData, user, isLoading]);
+
   useEffect(() => {
     if (cityData.data.length > 0 && weatherData.data.length > 0) {
       const activeCity = cityData.data.filter((city) => city.active === true);
@@ -130,16 +131,15 @@ function App() {
         dispatch(todaysHighlightApiAction(todaysData));
     }
   }, [weatherData, cityData]);
-  if(isLoadingCity || isLoading){
-    return <div className="m-auto">Loading...</div>
-  }
-  // if(!user || !cityData.data.length || !weatherData.data.length){
-  //   return <div className="m-auto">Loading...</div>
-  // }
+  
   return (
     <div className="App">
-      <MainPage></MainPage>
-    </div>
+    {isLoadingCity ? (
+      <div className="m-auto">Loading...</div>
+    ) : (
+      <MainPage />
+    )}
+  </div>
   );
 }
 

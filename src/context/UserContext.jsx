@@ -9,7 +9,7 @@ export const UserContext = React.createContext({
   token: null,
   login: () => {},
   signUp: () => {},
-  instance: null
+  instance: null,
 });
 
 const UserContextProvider = ({ children }) => {
@@ -86,8 +86,8 @@ const UserContextProvider = ({ children }) => {
       });
   };
   useEffect(() => {
-   const element = new TeleportAutocomplete({ el: ".my-input" });
-   setInstance(element);
+      const element = new TeleportAutocomplete({ el: ".my-input" });
+      setInstance(element);
   }, []);
   return (
     <UserContext.Provider
