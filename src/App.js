@@ -133,9 +133,9 @@ function App() {
   if(isLoadingCity || isLoading){
     return <div className="m-auto">Loading...</div>
   }
-  if(!user || !cityData.data.length || !weatherData.data.length){
-    return <div className="m-auto">Loading...</div>
-  }
+  // if(!user || !cityData.data.length || !weatherData.data.length){
+  //   return <div className="m-auto">Loading...</div>
+  // }
   return (
     <div className="App">
       <MainPage></MainPage>
