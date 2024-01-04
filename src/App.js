@@ -130,7 +130,7 @@ function App() {
         dispatch(todaysHighlightApiAction(todaysData));
     }
   }, [weatherData, cityData]);
-  if(isLoadingCity){
+  if(isLoadingCity || isLoading){
     return <div className="m-auto">Loading...</div>
   }
   // if(!user || !cityData.data.length || !weatherData.data.length){
