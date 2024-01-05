@@ -4,7 +4,7 @@ function Chart(props) {
   const data = props.data;
   const padding = 40;
   const minChartWidth = 400; // Minimum chart width to avoid it being too small
-  const width = Math.max(minChartWidth, padding * 2 + data.length * 80);
+  const width = Math.max(minChartWidth, padding * 2 + data.length * 40);
   const height = 200;
 
   let xScale;
@@ -17,16 +17,22 @@ function Chart(props) {
   const yMax = Math.max(
     ...data.map((item) => Math.max(item.temp, item.feelsLike))
   );
-  const yScale = (height - 2 * padding - 80) / yMax;
-  const fyScale = (height - padding - 60) / yMax;
+  const yMin = Math.min(
+    ...data.map((item) => Math.min(item.temp, item.feelsLike))
+  );
+  const yRange = yMax - yMin;
+  // const yScale = (height - 2 * padding - 80) / yRange;
+  // const fyScale = (height - padding - 60) / yRange;
+  const yScale = (height - 2 * padding) / (yRange || 1);
+  const fyScale = (height - 2* padding) / (yRange || 1);
   const rectWidth = 40; // Width of the rectangle background
   const rectHeight = 20; // Height of the rectangle background
   return (
     <svg width={width} height={height}>
       {data.map((point, index) => {
         const x = padding + index * xScale;
-        const y = height - padding - point.temp * yScale;
-        const fy = height - padding - point.feelsLike * fyScale;
+        const y = height - padding - (point.temp - yMin) * yScale;
+        const fy = height - padding - (point.feelsLike - yMin) * fyScale;
         const circleRadius = 4;
         const labelOffset = 10;
         const rectX = x - rectWidth / 2; // Center the rectangle
@@ -35,10 +41,15 @@ function Chart(props) {
         const circle = (
           <g key={index}>
             <circle cx={x} cy={y} r={circleRadius} fill="white" />
-            <text x={x} y={height - padding + 20} textAnchor="middle" fill="white">
+            <text
+              x={x}
+              y={height - padding + 20}
+              textAnchor="middle"
+              fill="white"
+            >
               {point.time}
             </text>
-            <text x={x} y={y - circleRadius - labelOffset} textAnchor="middle" fill="white">
+            <text x={x} y={y - circleRadius -labelOffset} textAnchor="middle" fill="white">
               {Math.round(point.temp)}
               {point.icon}
             </text>
@@ -49,8 +60,10 @@ function Chart(props) {
         let line = null;
         if (index > 0) {
           const prevX = padding + (index - 1) * xScale;
-          const prevY = height - padding - data[index - 1].temp * yScale;
-          const prevfY = height - padding - data[index - 1].feelsLike * fyScale;
+          const prevY =
+            height - padding - (data[index - 1].temp - yMin) * yScale;
+          const prevfY =
+            height - padding - (data[index - 1].feelsLike - yMin) * fyScale;
           line = (
             <>
               <line x1={prevX} y1={prevY} x2={x} y2={y} stroke="white" />
@@ -61,7 +74,7 @@ function Chart(props) {
           <g>
             <rect
               x={rectX}
-              y={rectY}
+              y={rectY - circleRadius -labelOffset}
               width={rectWidth}
               height={rectHeight}
               fill="white"
@@ -73,13 +86,17 @@ function Chart(props) {
           <g key={index}>
             {line}
             {circle}
-            {rectBackground}
-            <text x={x} y={fy} textAnchor="middle" dominantBaseline="middle">
+            {/* {rectBackground}
+            <text
+              x={x}
+              y={fy - circleRadius -labelOffset}
+              textAnchor="middle"
+              dominantBaseline="middle"
+            >
               {Math.round(point.feelsLike)}
               {point.icon}
-                <title>Feels Like</title>
-            
-            </text>
+              <title>Feels Like</title>
+            </text> */}
           </g>
         );
       })}
