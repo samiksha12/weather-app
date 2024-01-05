@@ -37,16 +37,27 @@ export function cityApiDelete(data) {
 // }
 export function currentApiAction(instance) {
   return (dispatch) => {
-    instance.currentLocation();
+    instance
+      .currentLocation()
+      .then((locationData) => {
+        dispatch(cityApiSuccess(locationData));
+      })
+      .catch((error) => {
+        console.error("Error fetching location:", error);
+      });
   };
 }
 
-export function deleteCityApiAction(citydata, geoNameId, user) {
+export function deleteCityApiAction(citydata, geoNameId, user, instance) {
   return (dispatch) => {
     dispatch(cityApiLoading());
     dispatch(cityApiDelete(geoNameId));
+    if (citydata.active === true) {
+      dispatch(currentApiAction(instance));
+    }
     deleteData(DELETE_DATA, citydata, user)
-      .then((data) => {})
+      .then((data) => {
+      })
       .catch((error) => {
         console.log(error);
       });

@@ -20,7 +20,7 @@ import { todaysHighlightApiAction } from "./action/todaysHighlightApiAction";
 import { seeDetailApiAction } from "./action/seeDetailApiAction";
 
 function App() {
-  const { user, login, instance} = useContext(UserContext);
+  const { user, login, instance } = useContext(UserContext);
   const dispatch = useDispatch();
   const cityData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
@@ -131,15 +131,11 @@ function App() {
         dispatch(todaysHighlightApiAction(todaysData));
     }
   }, [weatherData, cityData]);
-  
+
   return (
     <div className="App">
-    {isLoadingCity ? (
-      <div className="m-auto">Loading...</div>
-    ) : (
-      <MainPage />
-    )}
-  </div>
+      {isLoadingCity ? <div className="m-auto">Loading...</div> : <MainPage />}
+    </div>
   );
 }
 

@@ -337,7 +337,8 @@ class TeleportAutocomplete {
   /**
    * Geolocate current city
    */
-  currentLocation() {
+  currentLocation(){
+  return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
     const embed = `location:nearest-cities/location:nearest-city/${
       this.embeds ? `{${this.embeds}}` : ""
@@ -357,19 +358,68 @@ class TeleportAutocomplete {
           "Accept",
           `application/vnd.teleport.v${this.apiVersion}+json`
         );
-        req.addEventListener("load", () =>
-          this.parseLocation(JSON.parse(req.response))
-        );
+        req.addEventListener("load", () => {
+          const parsedResponse = JSON.parse(req.response);
+          const res = halfred.parse(parsedResponse);
+          const nearest = res.embeddedArray("location:nearest-cities")[0];
+          if (nearest) {
+            const result = this.parseCity(nearest);
+            this.loading = false;
+            this.el.placeholder = this.oldPlaceholder;
+            resolve(result); // Resolve the Promise with the result
+          } else {
+            reject(new Error("Nearest location not found"));
+          }
+        });
         req.send();
       },
       ({ message }) => {
         this.loading = false;
         this.el.placeholder = message;
         setTimeout(() => (this.el.placeholder = this.oldPlaceholder), 3000);
+        reject(new Error(message)); // Reject the Promise with the error message
       },
       { timeout: 5000 }
     );
-  }
+  });
+}
+
+
+
+  // currentLocation() {
+  //   const req = new XMLHttpRequest();
+  //   const embed = `location:nearest-cities/location:nearest-city/${
+  //     this.embeds ? `{${this.embeds}}` : ""
+  //   }`;
+
+  //   this.loading = true;
+  //   this.oldPlaceholder = this.el.placeholder;
+  //   this.el.placeholder = "Detecting location...";
+
+  //   navigator.geolocation.getCurrentPosition(
+  //     ({ coords }) => {
+  //       req.open(
+  //         "GET",
+  //         `${this.apiRoot}/locations/${coords.latitude},${coords.longitude}/?embed=${embed}`
+  //       );
+  //       req.setRequestHeader(
+  //         "Accept",
+  //         `application/vnd.teleport.v${this.apiVersion}+json`
+  //       );
+  //       req.addEventListener("load", () =>{
+  //         this.parseLocation(JSON.parse(req.response))
+  //       }
+  //       );
+  //       req.send();
+  //     },
+  //     ({ message }) => {
+  //       this.loading = false;
+  //       this.el.placeholder = message;
+  //       setTimeout(() => (this.el.placeholder = this.oldPlaceholder), 3000);
+  //     },
+  //     { timeout: 5000 }
+  //   );
+  // }
 
   /**
    * Parse current location API response

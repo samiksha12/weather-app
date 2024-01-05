@@ -147,6 +147,10 @@ h2 {
   }
 }
 
+.active-button:disabled{
+  border:0px solid transparent;
+}
+
 .spinner:before {
   position: absolute;
   top: 50%;

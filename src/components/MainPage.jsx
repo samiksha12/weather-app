@@ -22,7 +22,7 @@ function MainPage() {
   }, [citiesData]);
   useEffect(() => {
     let getImage = clearsky;
-    if (activeCity && activeCity[0] && !isLoading && !isLoadingCity) {
+    if (activeCity && activeCity.length>0 && activeCity[0] && !isLoading && !isLoadingCity) {
       if (
         activeCity[0].current_weather &&
         activeCity[0].current_weather.weathercode
