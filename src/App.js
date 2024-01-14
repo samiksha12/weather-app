@@ -55,11 +55,13 @@ function App() {
   }, [user, dispatch]);
   useEffect(() => {
     if (instance) {
+      const handleChange = (val) => {
       instance.on("change", function (val) {
         if (val && val.geonameId) {
           typeof val !== undefined &&
             typeof val === "object" &&
             dispatch(cityApiSuccess(val));
+            console.log('calling');
           typeof val !== undefined &&
             typeof val === "object" &&
             dispatch(
@@ -74,6 +76,10 @@ function App() {
         }
       });
     }
+    instance.off("change", handleChange);
+
+    instance.on("change", handleChange);
+  }
   }, [dispatch, instance]);
   useEffect(() => {
     setTimeout(() => {

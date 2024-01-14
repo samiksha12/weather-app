@@ -40,18 +40,18 @@ export function currentApiAction(instance) {
     instance
       .currentLocation()
       .then((locationData) => {
-        instance.emit('change',locationData);
-        // dispatch(cityApiSuccess(locationData));
-        // typeof locationData !== undefined &&
-        //   typeof locationData === "object" &&
-        //   dispatch(
-        //     weatherApiAction(
-        //       locationData.latitude,
-        //       locationData.longitude,
-        //       locationData.timezone,
-        //       locationData.geonameId
-        //     )
-        //   );
+        
+        dispatch(cityApiSuccess(locationData));
+        typeof locationData !== undefined &&
+          typeof locationData === "object" &&
+          dispatch(
+            weatherApiAction(
+              locationData.latitude,
+              locationData.longitude,
+              locationData.timezone,
+              locationData.geonameId
+            )
+          );
       })
       .catch((error) => {
         console.error("Error fetching location:", error);
