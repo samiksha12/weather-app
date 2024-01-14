@@ -98,7 +98,10 @@ function App() {
           const weatherCurrent = weatherData.data.filter(
             (weather) => weather.geonameId === city.geonameId
           );
-          city.current_weather = weatherCurrent[0].current_weather;
+          if(weatherCurrent && weatherCurrent.length >0){
+            city.current_weather = weatherCurrent[0].current_weather;
+          }
+          
           return city;
         }
         return city;
