@@ -137,7 +137,7 @@ function App() {
 
   return (
     <div className="App">
-      {isLoadingCity ? <div className="m-auto">Loading...</div> : <MainPage />}
+      {!isLoadingCity ? <div className="m-auto">Loading...</div> : <MainPage />}
     </div>
   );
 }
