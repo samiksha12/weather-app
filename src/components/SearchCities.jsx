@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import {
+  cityApiLoading,
   currentApiAction
 } from "../action/cityApiAction";
 import CityList from "./CityList";
@@ -12,6 +13,7 @@ function SearchCities() {
   const {instance } = useContext(UserContext);
   const cityData = useSelector((state)=> state.city);
   const handleCurrent = () => {
+    dispatch(cityApiLoading());
     dispatch(currentApiAction(instance));
   };
 

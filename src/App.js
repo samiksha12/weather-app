@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import MainPage from "./components/MainPage";
 import { UserContext } from "./context/UserContext";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,9 +18,11 @@ import {
 } from "./common/Helper/helper";
 import { todaysHighlightApiAction } from "./action/todaysHighlightApiAction";
 import { seeDetailApiAction } from "./action/seeDetailApiAction";
+import TeleportAutocomplete from "./plugin/autocomplete";
 
 function App() {
-  const { user, login, instance } = useContext(UserContext);
+  const { user, login, setInstanceValue } = useContext(UserContext);
+  const [instance, setInstance] = useState(null);
   const dispatch = useDispatch();
   const cityData = useSelector((state) => state.city);
   const weatherData = useSelector((state) => state.weather);
@@ -41,6 +43,11 @@ function App() {
       console.log("there is some error which need to be handled", error);
     }
   }, []);
+  useEffect(() => {
+    const element = new TeleportAutocomplete({ el: ".my-input" });
+    setInstance(element);
+    setInstanceValue(element);
+  }, [isLoading]);
   useEffect(() => {
     if (user !== null && user !== undefined && instance) {
       dispatch(getCityApiAction(user, instance));
@@ -98,10 +105,10 @@ function App() {
           const weatherCurrent = weatherData.data.filter(
             (weather) => weather.geonameId === city.geonameId
           );
-          if(weatherCurrent && weatherCurrent.length >0){
+          if (weatherCurrent && weatherCurrent.length > 0) {
             city.current_weather = weatherCurrent[0].current_weather;
           }
-          
+
           return city;
         }
         return city;
@@ -137,7 +144,7 @@ function App() {
 
   return (
     <div className="App">
-      {!isLoadingCity ? <div className="m-auto">Loading...</div> : <MainPage />}
+      {isLoadingCity ? <div className="m-auto">Loading...</div> : <MainPage />}
     </div>
   );
 }

@@ -40,7 +40,18 @@ export function currentApiAction(instance) {
     instance
       .currentLocation()
       .then((locationData) => {
-        dispatch(cityApiSuccess(locationData));
+        instance.emit('change',locationData);
+        // dispatch(cityApiSuccess(locationData));
+        // typeof locationData !== undefined &&
+        //   typeof locationData === "object" &&
+        //   dispatch(
+        //     weatherApiAction(
+        //       locationData.latitude,
+        //       locationData.longitude,
+        //       locationData.timezone,
+        //       locationData.geonameId
+        //     )
+        //   );
       })
       .catch((error) => {
         console.error("Error fetching location:", error);
@@ -56,8 +67,7 @@ export function deleteCityApiAction(citydata, geoNameId, user, instance) {
       dispatch(currentApiAction(instance));
     }
     deleteData(DELETE_DATA, citydata, user)
-      .then((data) => {
-      })
+      .then((data) => {})
       .catch((error) => {
         console.log(error);
       });

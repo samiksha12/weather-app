@@ -105,6 +105,20 @@ class TeleportAutocomplete {
       });
     }
 
+    if (this.query === "" && geoLocate) {
+      // Use the modified currentLocation method
+      this.currentLocation()
+        .then((result) => {
+          this.value = result;
+          this.emit("change", this.value);
+          this.el.placeholder = this.oldPlaceholder;
+        })
+        .catch((error) => {
+          console.error("Error detecting location:", error);
+          // Handle the error appropriately
+        });
+    }
+
     this.getCities = debounce(this.getCities, 200);
     return this;
   }
@@ -252,7 +266,24 @@ class TeleportAutocomplete {
     const isGeolocate =
       this.list.firstChild &&
       this.list.firstChild.classList.contains("geolocate");
-    if (isGeolocate) this.currentLocation();
+      if (isGeolocate) {
+        // Use the modified currentLocation method
+        this.currentLocation()
+          .then((result) => {
+            if (result && this.value !== result) {
+              this.value = result;
+              this.emit("change", this.value);
+            }
+            this.list.innerHTML = "";
+            this.query =
+              this.value &&
+              `${this.value.name}, ${this.value.admin1DivisionCode}, ${this.value.country}`;
+          })
+          .catch((error) => {
+            console.error("Error detecting location:", error);
+            // Handle the error appropriately
+          });
+      }
 
     if (oldValue !== this.value && !isGeolocate)
       this.emit("change", this.value);
@@ -364,8 +395,9 @@ class TeleportAutocomplete {
           const nearest = res.embeddedArray("location:nearest-cities")[0];
           if (nearest) {
             const result = this.parseCity(nearest);
+            console.log(result);
             this.loading = false;
-            this.el.placeholder = this.oldPlaceholder;
+            this.el.placeholder = result.title;
             resolve(result); // Resolve the Promise with the result
           } else {
             reject(new Error("Nearest location not found"));
@@ -386,40 +418,7 @@ class TeleportAutocomplete {
 
 
 
-  // currentLocation() {
-  //   const req = new XMLHttpRequest();
-  //   const embed = `location:nearest-cities/location:nearest-city/${
-  //     this.embeds ? `{${this.embeds}}` : ""
-  //   }`;
-
-  //   this.loading = true;
-  //   this.oldPlaceholder = this.el.placeholder;
-  //   this.el.placeholder = "Detecting location...";
-
-  //   navigator.geolocation.getCurrentPosition(
-  //     ({ coords }) => {
-  //       req.open(
-  //         "GET",
-  //         `${this.apiRoot}/locations/${coords.latitude},${coords.longitude}/?embed=${embed}`
-  //       );
-  //       req.setRequestHeader(
-  //         "Accept",
-  //         `application/vnd.teleport.v${this.apiVersion}+json`
-  //       );
-  //       req.addEventListener("load", () =>{
-  //         this.parseLocation(JSON.parse(req.response))
-  //       }
-  //       );
-  //       req.send();
-  //     },
-  //     ({ message }) => {
-  //       this.loading = false;
-  //       this.el.placeholder = message;
-  //       setTimeout(() => (this.el.placeholder = this.oldPlaceholder), 3000);
-  //     },
-  //     { timeout: 5000 }
-  //   );
-  // }
+  
 
   /**
    * Parse current location API response
