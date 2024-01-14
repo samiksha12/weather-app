@@ -395,7 +395,7 @@ class TeleportAutocomplete {
           const nearest = res.embeddedArray("location:nearest-cities")[0];
           if (nearest) {
             const result = this.parseCity(nearest);
-            console.log(result);
+            // console.log(result);
             this.loading = false;
             this.el.placeholder = result.title;
             resolve(result); // Resolve the Promise with the result
