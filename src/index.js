@@ -13,11 +13,11 @@ const store = configureStore();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <Provider store={store}>
-    <UserContextProvider>
+  // <Provider store={store}>
+    // <UserContextProvider>
       <App />
-    </UserContextProvider>
-  </Provider>
+    // </UserContextProvider>
+  // </Provider>
   // {/* </React.StrictMode> */}
 );
 
