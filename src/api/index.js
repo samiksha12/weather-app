@@ -1,4 +1,5 @@
 import { BACKEND_DOMAIN, loginCredentials } from "../config";
+import Geonames from 'geonames.js';
 
 export const getData = async (url) => {
   const resp = await fetch(`${BACKEND_DOMAIN}${url}`, {
@@ -73,3 +74,9 @@ export const getAirQualityIndex = async(latitude,longitude)=>{
   const data = await resp.json();
   return data;
 }
+
+export const geonames = Geonames({
+  username: 'samiksha',
+  lan: 'en',
+  encoding: 'JSON'
+});

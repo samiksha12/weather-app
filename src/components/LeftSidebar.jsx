@@ -8,7 +8,6 @@ function LeftSidebar() {
     <div className='m-2 p-2 d-flex flex-column justify-content-between'>
         <SearchCities></SearchCities>
         <TodayWeather></TodayWeather>
-        <LocationImage></LocationImage>
     </div>
   )
 }

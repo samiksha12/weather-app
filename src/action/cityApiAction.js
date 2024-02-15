@@ -1,5 +1,4 @@
 import * as types from "./type";
-import TeleportAutocomplete from "../plugin/autocomplete";
 import { deleteData, getData, getDataById, postData } from "../api";
 import { DELETE_DATA, GET_DATA, POST_DATA } from "../api/url";
 import { weatherApiAction } from "./weatherApiAction";
@@ -46,8 +45,8 @@ export function currentApiAction(instance) {
           typeof locationData === "object" &&
           dispatch(
             weatherApiAction(
-              locationData.latitude,
-              locationData.longitude,
+              locationData.lat,
+              locationData.lng,
               locationData.timezone,
               locationData.geonameId
             )

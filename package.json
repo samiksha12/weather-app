@@ -14,6 +14,7 @@
     "core-js": "^1.2.0",
     "debounce": "^1.0.0",
     "element-closest": "^1.0.3",
+    "geonames.js": "^3.0.6",
     "halfred": "^1.0.0",
     "luxon": "^3.4.3",
     "minivents": "^2.0.0",

@@ -8,14 +8,16 @@ import CityList from "./CityList";
 import Icon from "../common/Icon";
 import { UserContext } from "../context/UserContext";
 
+
 function SearchCities() {
   const dispatch = useDispatch();
   const {instance } = useContext(UserContext);
   const cityData = useSelector((state)=> state.city);
   const handleCurrent = () => {
-    dispatch(cityApiLoading());
-    dispatch(currentApiAction(instance));
+    // dispatch(cityApiLoading());
+    // dispatch(currentApiAction(instance));
   };
+ 
 
   return (
     <React.Fragment>
