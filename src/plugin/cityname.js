@@ -314,7 +314,7 @@ class GeoNamesAutocomplete {
               this.results.countryCode;
               const timezone = await this.getTzData(this.results);
               this.results.timezone = timezone;
-              this.el.placeholder = this.results.title;
+              this.el.value = this.results.title;
               resolve(this.results);
           } catch (error) {
             console.error("Error fetching results:", error);

@@ -57,7 +57,6 @@ function App() {
   useEffect(() => {
     if (instance) {
       const handleChange = (val) => {
-      instance.on("change", function (val) {
         if (val && val.geonameId) {
           typeof val !== undefined &&
             typeof val === "object" &&
@@ -74,11 +73,11 @@ function App() {
             );
           dispatch(seeDetailApiAction("home"));
         }
-      });
     }
-    instance.off("change", handleChange);
-
     instance.on("change", handleChange);
+    return () => {
+      instance.off("change", handleChange);
+    };    
   }
   }, [dispatch, instance]);
   useEffect(() => {

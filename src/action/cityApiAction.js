@@ -124,6 +124,7 @@ export function getCustomCity(item, instance) {
       if (inputElement) {
         inputElement.value = item.title;
         instance.emit("change", item);
+        
       }
     }
   };
