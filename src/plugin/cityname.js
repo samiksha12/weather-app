@@ -142,7 +142,6 @@ class GeoNamesAutocomplete {
     const code = event.keyCode;
 
     if ([Key.UP, Key.DOWN].indexOf(code) !== -1) event.preventDefault();
-
     switch (code) {
       case Key.BACK:
         if (this.value || this.query.length === 1) this.clear();
@@ -170,7 +169,7 @@ class GeoNamesAutocomplete {
     this.activeIndex = index;
     const oldValue = this.value;
     this.value = this.results[index] || null;
-
+    
     const isGeolocate =
       this.list.firstChild &&
       this.list.firstChild.classList.contains("geolocate");

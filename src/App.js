@@ -75,11 +75,11 @@ function App() {
         }
     }
     instance.on("change", handleChange);
-    return () => {
-      instance.off("change", handleChange);
-    };    
+    // return () => {
+    //   instance.off("change", handleChange);
+    // };    
   }
-  }, [dispatch, instance]);
+  }, [instance]);
   useEffect(() => {
     setTimeout(() => {
       const temperatureElements = document.querySelectorAll(".temperature");
